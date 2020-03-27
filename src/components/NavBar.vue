@@ -1,10 +1,10 @@
 <template>
   <div id="nav" class="nav">
-    <router-link to="/" class="brand">Real World Events</router-link>
+    <router-link to="/" class="brand">soilhealth.app HOME</router-link>
     <nav>
-      <router-link :to="{ name: 'event-list' }">Event List</router-link>|
-      <router-link :to="{ name: 'event-create' }">Create Event</router-link>|
-      <router-link :to="{ name: 'map' }">Map no. 1</router-link>
+      <router-link :to="{ name: 'obs-list' }">Observation List</router-link>|
+      <router-link :to="{ name: 'site-list' }">Site List</router-link>|
+      <router-link :to="{ name: 'obs-create' }">Create Obs</router-link>|
     </nav>
   </div>
 </template>

@@ -1,11 +1,10 @@
 <template>
-  <router-link class="event-link" :to="{ name: 'event-show', params: { id: event.id } }">
-    <div class="event-card -shadow">
-      <span class="eyebrow">@{{ event.time }} on {{ event.date }}</span>
-      <h4>{{ event.title }}</h4>
-      <BaseIcon name="users">
-        <h4>{{ event.attendees.length }} attending</h4>
-      </BaseIcon>
+  <router-link class="site-link" :to="{ name: 'obs-detail', params: { id: observation.id } }">
+    <div class="site-card -shadow">
+      <h4>Obs # {{ observation.id }} on site {{ observation.site }}</h4>
+      <p>{{ observation.kv }}</p>
+      <p>Observer: {{ observation.observer }}</p>
+      <p>Type: {{ observation.type }}</p>
     </div>
   </router-link>
 </template>
@@ -13,7 +12,7 @@
 <script>
 export default {
   props: {
-    event: Object
+    observation: {}
   }
 }
 </script>
@@ -22,22 +21,22 @@ export default {
 h4 {
   color: green;
 }
-.event-card {
+.site-card {
   padding: 20px;
   margin-bottom: 24px;
   transition: all 0.2s linear;
   cursor: pointer;
 }
-.event-card:hover {
+.site-card:hover {
   transform: scale(1.05);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 129, 0.7),
     0 1px 15px 0 rgba(0, 0, 120, 0.877);
 }
-.event-card > .title {
+.site-card > .title {
   margin: 0;
 }
 
-.event-link {
+.site-link {
   color: black;
   text-decoration: none;
   font-weight: 100;

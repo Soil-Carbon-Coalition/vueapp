@@ -1,20 +1,22 @@
 <template>
   <div id="app">
-    <p>hey there</p>
     <NavBar />
+    <!-- router-view is where the components or pages will render -->
     <router-view />
+    <!-- <loader :is-visible="isLoading"></loader> -->
   </div>
 </template>
 
 <script>
+// import Loader from '@/components/Loader.vue'
 import NavBar from '@/components/NavBar.vue'
 export default {
   components: {
     NavBar
+    // Loader
   }
 }
 </script>
-script
 
 <style>
 html {

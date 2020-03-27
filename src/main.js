@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import 'nprogress/nprogress.css'
+
 Vue.config.productionTip = false
 
 // the following does automatic global registration of components whose name begins with 'base'
@@ -26,6 +27,6 @@ requireComponent.keys().forEach(fileName => {
 
 new Vue({
   router,
-  store,
+  // store,
   render: h => h(App)
 }).$mount('#app')
