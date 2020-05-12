@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <NavBar />
+
     <!-- router-view is where the components or pages will render -->
     <router-view />
     <!-- <loader :is-visible="isLoading"></loader> -->

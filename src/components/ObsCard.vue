@@ -1,16 +1,25 @@
 <template>
-  <router-link class="site-link" :to="{ name: 'obs-detail', params: { id: observation.id } }">
+  <router-link
+    class="site-link"
+    :to="{ name: 'obs-detail', params: { id: observation.id } }"
+  >
     <div class="site-card -shadow">
-      <h4>Obs # {{ observation.id }} on site {{ observation.site }}</h4>
-      <p>{{ observation.kv }}</p>
-      <p>Observer: {{ observation.observer }}</p>
-      <p>Type: {{ observation.type }}</p>
+      <h4>
+        Obs # {{ observation.id }} on site {{ observation.properties.sitename }}
+      </h4>
+      <ul v-for="(value, name, index) in observation.properties" :key="index">
+        <li v-if="value">
+          <b>{{ name }}:</b>
+          {{ value }}
+        </li>
+      </ul>
     </div>
   </router-link>
 </template>
 
 <script>
 export default {
+  // name: ObsCard,
   props: {
     observation: {}
   }

@@ -1,10 +1,13 @@
 <template>
-  <div id="nav" class="nav">
-    <router-link to="/" class="brand">soilhealth.app HOME</router-link>
+  <div id="nav" class="navbar navbar-expand-lg navbar-light bg-light">
+    <router-link to="/" class="navbar-brand">soilhealth.app HOME</router-link>
     <nav>
       <router-link :to="{ name: 'obs-list' }">Observation List</router-link>|
       <router-link :to="{ name: 'site-list' }">Site List</router-link>|
       <router-link :to="{ name: 'obs-create' }">Create Obs</router-link>|
+      <router-link :to="{ name: 'login' }">Login</router-link>|
+      <router-link :to="{ name: 'outbox' }">Your outbox</router-link>|
+      <router-link :to="{ name: 'test' }">Test component</router-link>|
     </nav>
   </div>
 </template>

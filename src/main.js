@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import 'nprogress/nprogress.css'
 
 Vue.config.productionTip = false
@@ -23,6 +24,15 @@ requireComponent.keys().forEach(fileName => {
   )
 
   Vue.component(componentName, componentConfig.default || componentConfig)
+})
+// this is to correct an issue where default icons are not shown
+// eslint-disable-next-line
+delete L.Icon.Default.prototype._getIconUrl
+// eslint-disable-next-line
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 })
 
 new Vue({

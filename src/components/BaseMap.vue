@@ -1,5 +1,8 @@
 <template>
-  <div id="mapContainer"></div>
+  <div>
+    <h1 v-if="loading">Loading CHILD . . .</h1>
+    <div id="mapContainer"></div>
+  </div>
 </template>
 
 <script>
@@ -8,17 +11,44 @@ import L from 'leaflet'
 
 export default {
   name: 'BaseMap',
-  data() {
-    return {
-      map: null
+  props: {
+    observations: {
+      type: Array,
+      required: true,
+      default() {
+        return ['default', 'yes']
+      }
     }
   },
+  data() {
+    return {
+      map: null,
+      loading: true
+    }
+  },
+  methods: {
+    setupLeafletMap: function() {
+      this.map = L.map('mapContainer').setView([45.259, -117.743], 5)
+
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(this.map)
+    },
+    addData: function() {
+      console.log('childdata length: ', this.observations.length)
+      var feats = L.geoJSON(this.observations).addTo(this.map)
+      this.loading = false
+      this.map.fitBounds(feats.getBounds(), {
+        padding: [50, 50]
+      })
+    }
+  },
+
   mounted() {
-    this.map = L.map('mapContainer').setView([45.259, -117.743], 11)
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map)
+    this.setupLeafletMap()
+    setTimeout(this.addData, 2000)
+    // this.addStatic()
   },
   beforeDestroy() {
     if (this.map) {
@@ -30,7 +60,7 @@ export default {
 
 <style scoped>
 #mapContainer {
-  width: 100vw;
-  height: 100vh;
+  width: 50vw;
+  height: 80vh;
 }
 </style>

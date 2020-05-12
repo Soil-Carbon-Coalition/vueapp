@@ -1,18 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// import NProgress from 'nprogress'
+
 import SiteList from './views/SiteList.vue'
 import SiteDetail from './views/SiteDetail.vue'
 import ObsList from './views/ObsList.vue'
 import ObsDetail from './views/ObsDetail.vue'
 import ObsCreate from './views/ObsCreate.vue'
-// import SiteCreate from '../views/SiteCreate.vue'
-// import LeafletMap from '../components/LeafletMap.vue'
-// import SiteCard from '../components/SiteCard.vue'
+import Login from './views/Login.vue'
+import Outbox from './views/Outbox.vue'
+import Test from './views/Test.vue'
 
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
+  mode: 'history', // this will enable back button functionality
   routes: [
     {
       path: '/sites/',
@@ -40,26 +42,36 @@ const router = new Router({
       path: '/observations/create',
       name: 'obs-create',
       component: ObsCreate
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/observations/outbox',
+      name: 'outbox',
+      component: Outbox
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     }
-
-    // {
-    //   path: 'site/create',
-    //   name: 'site-create',
-    //   component: SiteCreate
-    // }
   ]
 })
 
-// router.beforeResolve((to, from, next) => {
+// // runs before navigating to component; must call next()
+// router.beforeEach((routeTo, routeFrom, next) => {
 //   // If this isn't an initial page load.
-//   if (to.name) {
+//   if (routeTo.name) {
 //     // Start the route progress bar.
 //     NProgress.start()
 //   }
 //   next()
 // })
-
-// router.afterEach((to, from) => {
+// // runs right before component is created
+// router.afterEach((routeTo, routeFrom) => {
 //   // Complete the animation of the route progress bar.
 //   NProgress.done()
 // })

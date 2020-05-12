@@ -1,7 +1,12 @@
 <template>
-  <div v-if="!loading">
-    <h1>Observation Listing</h1>
-    <ObsCard v-for="observation in observations" :key="observation.id" :observation="observation" />
+  <div>
+    <h1>Observations</h1>
+    <ObsCard
+      v-for="observation in observations.features"
+      :key="observation.id"
+      :observation="observation"
+    ></ObsCard>
+    <!-- <BaseMap :observations="observations" /> -->
   </div>
 </template>
 
@@ -13,11 +18,10 @@ export default {
   components: {
     ObsCard
   },
+  props: {},
   data() {
     return {
-      observations: [],
-      loading: true,
-      errored: false
+      observations: Object
     }
   },
   created() {
@@ -25,6 +29,7 @@ export default {
       // vuemastery shows this as response => {} which doesn't work!!! parens work
       .then(response => {
         this.observations = response.data
+        console.log('length: ', this.observations.features.length)
       })
       .catch(error => {
         console.log('There was an error:', error.response)
