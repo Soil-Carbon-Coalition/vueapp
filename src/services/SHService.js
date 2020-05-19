@@ -36,6 +36,12 @@ export default {
   getObs(id) {
     return apiClient.get('/observations/' + id)
   },
+  getProjects() {
+    return apiClient.get('/projects/')
+  },
+  getProject(id) {
+    return apiClient.get('/projects/' + id)
+  },
   postObs(obs) {
     return apiClient.post('/observations/', obs)
   }

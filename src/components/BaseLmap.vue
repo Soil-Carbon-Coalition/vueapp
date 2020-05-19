@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="container">
+  <div class="container">
     <div class="row">
       <div class="col-md-9">
         <div id="mapContainer" class="map">
-          <BasePopup ref="BasePopup" />
+          <!-- <BasePopup ref="BasePopup" /> -->
         </div>
       </div>
       <div class="col-md-3">
@@ -190,7 +190,7 @@ export default {
           feature => feature.type === 'polygon'
         )
         markerFeatures.forEach(feature => {
-          feature.leafletObject = L.marker(feature.coords).bindPopup(
+          feature.leafletObject = L.marker(feature.coords).bindTooltip(
             feature.name
           )
         })

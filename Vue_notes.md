@@ -12,13 +12,29 @@ https://vuejs.org/v2/guide/components-registration.html#Automatic-Global-Registr
 
 # VUEX AND STATE MANAGEMENT
 
-Do I need state management, e.g. Vuex?? This is probably true as state management refers to the client application state, e.g. who is the user, what are the current actions and so on. But state might well be managed at the component level, and I plan to use session authentication.
+Do I need state management, e.g. Vuex?? This is probably true as state management refers to the client application state, e.g. who is the user, what are the current actions and so on. Could state be managed at the component level? and I plan to use session authentication.
 
-Shouldn't the database be the single source of truth? But for offline use it won't be accessible.
+The database is not accessible in offline use. Vuex will enable the app to keep track of project, site, obstype during data entry. With vuex-persist we can store state on localForage (async and works with Promises, can story binary data such as images), keyed to current version of the app. WARNING: if users refresh state with a new app build that has a different state configuration, they may lose persisted data such as Outbox items. Some kind of workaround or warning may be needed.
 
-For example, the loading state, the outbox emptied state, the list of observations to repeat. A user wanting to repeat some observations, and having completed 3 out of 8 and the remaining 5 could be reminders or something.
+Also the loading state, the outbox emptied state, the list of observations to repeat. A user wanting to repeat some observations, and having completed 3 out of 8 and the remaining 5 could be reminders or something.
 
-User actions:
+atlasbiowork.com kept user data entry state in the url querystring? This wasn't very robust in field situations where random button presses may occur, etc.
+
+METHOD (in component) dispatch ACTION (async) which commits MUTATION (sync)
+
+MUTATIONS should always be wrapped in ACTIONS
+MUTATIONS typically named with all caps
+
+MUTATIONS are synchronous, ACTIONS asynchronous
+
+mapState MAPs the getters in the store to the computed properties on the component, and MAPs the actions in the store to the methods in our component.
+
+Localforage: https://medium.com/daily-now/optimistic-offline-first-apps-with-vuex-d8a412e105a7
+
+and this article sez service workers aren't needed:
+https://netterminalmachine.com/blog/2018/persisting-a-vuex-store-to-indexed-db
+
+# USER ACTIONS
 
 register
 login
@@ -37,13 +53,6 @@ comment on an observation
 subscribe to updates on new observations--by project, or by user if user consents to being "followed."
 
 Administrator actions (project coordinators have admin privileges for their project): DONE WITH DJANGO ADMIN
-
-METHOD (in component) dispatch ACTION (async) which commits MUTATION (sync)
-
-MUTATIONS should always be wrapped in ACTIONS
-MUTATIONS typically named with all caps
-
-MUTATIONS are synchronous, ACTIONS asynchronous
 
 # COMPONENTS
 
@@ -95,9 +104,11 @@ Configured in the Vue router.
 This means that every URL will return index.html
 See documentation on setting up Apache server and so on for push-state API. May need custom 404 component.
 
-# NESTED FORMS USING V-MODEL
+# PASSING OBSTYPE TEMPLATES?
 
-https://zaengle.com/blog/using-v-model-on-nested-vue-components has some cool explanations of nesting components for forms and using v-model to pass props. However, nesting key-value forms into ObsCreate.vue or SiteCreate.vue didn't create the JSON I need for the postgres JSON field. Possibly using FormData may help . . . .
+You can pass a html into a slot, and this could be a form for example.
+
+So: ObsEdit or ObsCreate could have a SLOT for the JSON field form (Base), which it would then loop through and deliver (emit?) to the outbox as a computed property, an object. Because: That slot has access to the same instance properties (i.e. the same “scope”) as the rest of the template.
 
 # AXIOS INTERCEPTORS
 
@@ -121,9 +132,11 @@ A GOOD WAY to add some logic and prompts to interactivity.
 
 # CSS
 
-Use bootstrap 4 or Tania Rascia's PRIMITIVE (https://github.com/taniarascia/primitive/) which might be easier than bootstrap. The app should be optimized for entering data on smaller devices in bright sunlight: high contrast, fairly large type, pages or views relatively simple.
+The app should be optimized for entering data on smaller devices in bright sunlight: high contrast, fairly large type, pages or views relatively simple. Tried Vuetify a little, went to Bootstrap and bootstrap-vue as it may be more easily customizable, has some handy icons, etc.
 
 # CSRF and login
+
+see warnings at https://stackoverflow.com/questions/54836387/getting-django-vue-cors-and-csrf-working-with-a-real-world-example
 
 try this for csrf:
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -133,6 +146,4 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 Webpack doesn't use the right URL for Leaflet default markers. Inserted a recommended fix in main.js
 
-Don't create the Leaflet map BEFORE the axios().then has returned the server data.
-
-Passing geojson data to a subcomponent that creates the map is potentially a problem.
+Don't create the Leaflet map BEFORE the axios().then has returned the server data. Use a v-if="!loading" for the map component to wait for axios to complete.

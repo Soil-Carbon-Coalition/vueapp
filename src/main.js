@@ -1,15 +1,28 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'nprogress/nprogress.css'
+import { BootstrapVue, IconsPlugin, BIconHouse } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+
+Vue.component('BIconHouse', BIconHouse)
+// SLIM THESE DOWN DEPENDING ON USE!
+import { LayoutPlugin, FormPlugin } from 'bootstrap-vue'
+Vue.use(LayoutPlugin, FormPlugin)
+
+// This imports <b-modal> as well as the v-b-modal directive as a plugin:
+// This imports <b-card> along with all the <b-card-*> sub-components as a plugin:
+import { CardPlugin, ModalPlugin } from 'bootstrap-vue'
+Vue.use(CardPlugin, ModalPlugin)
 
 Vue.config.productionTip = false
 
 // the following does automatic global registration of components whose name begins with 'base'
-
 const requireComponent = require.context(
   './components',
   false,
@@ -37,6 +50,6 @@ L.Icon.Default.mergeOptions({
 
 new Vue({
   router,
-  // store,
+  store,
   render: h => h(App)
 }).$mount('#app')
