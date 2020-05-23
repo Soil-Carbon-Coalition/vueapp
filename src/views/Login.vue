@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <button style="font-size:24px">
-      <i class="fa fa-home">Home</i>
-    </button>
-    <h1>Login</h1>
-    <p>User will login to a PROJECT</p>
-  </div>
+  <b-container>
+    <b-row align-h="center" class="mt-5">
+      <b-col cols="5">
+        <b-card class="p-3">Login</b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -13,4 +13,7 @@ export default {}
 </script>
 
 <style scoped>
+body {
+  background: #eef1f4;
+}
 </style>

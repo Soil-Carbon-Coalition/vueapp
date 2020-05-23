@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading">
+  <b-container v-if="!loading">
     <h3>
       Showing Observation # {{ observation.id }} on site: {{ observation.site }}:
       <br />
@@ -7,7 +7,7 @@
     </h3>
     <p>{{ observation.kv }}</p>
     <p>Observer: {{ observation.observer }}</p>
-  </div>
+  </b-container>
 </template>
 <script>
 import SHService from '@/services/SHService.js'

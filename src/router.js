@@ -12,9 +12,14 @@ import ObsEdit from './views/ObsEdit.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import Search from './views/Search.vue'
 import Login from './views/Login.vue'
+import Register from './views/Register.vue'
 import Outbox from './views/Outbox.vue'
+import Inbox from './views/Inbox.vue'
+import UserProfile from './views/UserProfile.vue'
 import BaseLmap from './components/BaseLmap.vue'
+// EXPERIMENTAL
 import Page from './exp/Page.vue'
 
 Vue.use(Router)
@@ -26,6 +31,11 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     },
     {
       path: '/sites/',
@@ -84,32 +94,35 @@ const router = new Router({
       name: 'page',
       component: Page
     },
-
-    {
-      path: '/observations/',
-      name: 'obs-list',
-      component: ObsList
-    },
-    {
-      path: '/observations/:id',
-      name: 'obs-detail',
-      component: ObsDetail,
-      props: true
-    },
     {
       path: '/login',
       name: 'login',
       component: Login
     },
     {
-      path: '/observations/outbox',
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/outbox',
       name: 'outbox',
       component: Outbox
+    },
+    {
+      path: '/inbox',
+      name: 'inbox',
+      component: Inbox
     },
     {
       path: '/Lmap',
       name: 'lmap',
       component: BaseLmap
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: UserProfile
     }
   ]
 })

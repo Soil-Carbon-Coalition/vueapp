@@ -1,9 +1,8 @@
 <template>
-  <div></div>
+  <div>My user profile</div>
 </template>
 
 <script>
-// IF USER==staff FOR EDIT FUNCTIONALITY.
 export default {}
 </script>
 

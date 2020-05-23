@@ -32,6 +32,7 @@ export default {
   },
   getObss() {
     return apiClient.get('/observations/')
+    // include project ID (from store) in query
   },
   getObs(id) {
     return apiClient.get('/observations/' + id)
@@ -41,6 +42,7 @@ export default {
   },
   getProject(id) {
     return apiClient.get('/projects/' + id)
+    // return resources and maps too?
   },
   postObs(obs) {
     return apiClient.post('/observations/', obs)

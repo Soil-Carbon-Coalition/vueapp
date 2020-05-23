@@ -28,6 +28,13 @@
 </template>
 
 <script>
+// IF USER==OBSERVER FOR EDIT FUNCTIONALITY. STEPS:
+// LOAD PROPER SUBCOMPONENT FOR OBSTYPE (INTO SLOT?)
+// CREATE FRESH OBS OBJECT (BLANK KV)
+// CREATEOBS FUNCTION: GET STATE FOR SITE, OBSTYPE, USER, PROJECT, ADD KV. then
+// MAKE POST REQUEST W AXIOS, WAIT TILL RESPONSE RETURNS, then createFreshObsObject if there is no
+// error.
+// import store from '@/store/store.js'
 import SHService from '@/services/SHService'
 
 export default {
@@ -53,12 +60,25 @@ export default {
     },
     createFreshObs() {
       return {
+        // GET THESE FROM STORE!
         observer: null,
         type: null,
         site: null,
         kv: {}
       }
     }
+
+    // USE SOMETHING ALONG THESE LINES to commit an action with store
+    // createNewObs({ commit, dispatch }, obs) {
+    //   return SHService.postObs(obs).then(() => {
+    //     // commit('ADD_EVENT', event)
+    //     const notification = {
+    //       type: 'success',
+    //       message: 'Your observation has been added to your Outbox!'
+    //     }
+    //     store.dispatch('notification/add', notification, { root: true })
+    //   })
+    // }
   }
 }
 </script>

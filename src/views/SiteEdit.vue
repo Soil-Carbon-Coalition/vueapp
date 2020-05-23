@@ -53,7 +53,13 @@
 </template>
 
 <script>
-export default {}
+// IF USER==staff FOR EDIT FUNCTIONALITY.
+
+// Create Fresh Site Object?
+
+export default {
+  methods: {}
+}
 </script>
 
 <style scoped>

@@ -6,6 +6,27 @@ https://router.vuejs.org/guide/essentials/history-mode.html#example-server-confi
 
 dynamic routing
 
+## ROUTE GUARDS
+
+Basically a lifecycle hook on a route.
+
+router.beforeEach((to, from, next) => {
+if (to.name !== 'login' && !isAuthenticated) next({ name: 'login' })
+else next() // without the 'else', next would be called twice
+})
+
+router.beforeResolve(to, from, next) =>{}
+
+router.afterEach(to, from){}
+
+## IN-COMPONENT ROUTE GUARDS
+
+beforeRouteEnter(to, from, next) // only one that supports passing callback to next()
+beforeRouteUpdate(to, from, next)
+beforeRouteLeave(to, from, next)
+
+# COMPONENT REGISTRATION
+
 automatic global registration of base components such as buttons, icons, etc can be done automatically with this code:
 
 https://vuejs.org/v2/guide/components-registration.html#Automatic-Global-Registration-of-Base-Components
@@ -33,6 +54,10 @@ Localforage: https://medium.com/daily-now/optimistic-offline-first-apps-with-vue
 
 and this article sez service workers aren't needed:
 https://netterminalmachine.com/blog/2018/persisting-a-vuex-store-to-indexed-db
+
+## STORE
+
+The store can be subdivided into modules with their own directories and even namespaces.
 
 # USER ACTIONS
 

@@ -1,9 +1,9 @@
 <template>
-  <div v-if="!loading">
+  <b-container v-if="!loading">
     <h3>site # {{ site.id }}: {{ site.properties.name ? site.properties.name : 0 }}</h3>
     <p>Coordinates: {{ site.geometry.coordinates }}</p>
     <p>Accuracy: {{ site.properties.accuracy }}</p>
-  </div>
+  </b-container>
 </template>
 <script>
 import SHService from '@/services/SHService.js'

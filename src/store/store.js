@@ -1,21 +1,36 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as notification from '@/store/modules/notification.js'
 // import SHService from '@/services/SHService.js'
 
+// COULD USE STORE DIRECTORY, MODULES DIRECTORY, SEPARATE FILES WITHIN TO MODULARIZE THE STORE
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    notification
+  },
   state: {
     user: { id: 1, name: 'Peter', email: 'managingwholes.com@gmail.com' },
-    project: { id: null, name: '' },
-    site: {
-      id: null,
-      sitename: ''
+    // user: null,
+    project: { id: 3, name: '' },
+    observation: {
+      // user: this.user,
+      // project: this.project
+      site: {
+        id: null,
+        sitename: ''
+      },
+      obsType: {
+        id: null,
+        name: ''
+      },
+      kv: {},
+      inOutbox: false,
+      entered: false
     },
-    obsType: {
-      id: null,
-      name: ''
-    },
+    outbox: [1, 3, 5, 6, 7],
+    inbox: [1, 2],
     products: [
       { id: 1, name: 'Banana', price: 20 },
       { id: 2, name: 'Apple', price: 10 },

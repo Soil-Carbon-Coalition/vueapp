@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container>
     <h1>Observations</h1>
     <ObsCard
       v-for="observation in observations.features"
@@ -7,12 +7,13 @@
       :observation="observation"
     ></ObsCard>
     <!-- <BaseMap :observations="observations" /> -->
-  </div>
+  </b-container>
 </template>
 
 <script>
 import ObsCard from '@/components/ObsCard.vue'
 import SHService from '@/services/SHService.js'
+import store from '@/store/store.js'
 
 export default {
   components: {
@@ -32,7 +33,13 @@ export default {
         console.log('length: ', this.observations.features.length)
       })
       .catch(error => {
-        console.log('There was an error:', error.response)
+        // console.log('There was an error:', error.response)
+        // the following adds a notification with the namespaced module in the Vuex store
+        const notification = {
+          type: 'error',
+          message: 'There was a problem fetching observations: ' + error.message
+        }
+        store.dispatch('notification/add', notification, { root: true })
       })
       .finally(() => (this.loading = false))
   }

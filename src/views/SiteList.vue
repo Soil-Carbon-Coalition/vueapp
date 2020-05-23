@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!loading">
-    <h1>Site Listing</h1>
+  <b-container v-if="!loading">
+    <h1>Sites</h1>
     <SiteCard v-for="site in sites.features" :key="site.id" :site="site" />
-  </div>
+  </b-container>
 </template>
 
 <script>

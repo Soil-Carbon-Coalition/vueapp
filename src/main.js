@@ -1,16 +1,25 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/store'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import { BootstrapVue, IconsPlugin, BIconHouse } from 'bootstrap-vue'
+import {
+  BootstrapVue,
+  IconsPlugin,
+  BIconHouse,
+  BIconDownload,
+  BIconUpload
+} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-Vue.component('BIconHouse', BIconHouse)
+Vue.component('BIconHouse', BIconHouse) //the house icon
+Vue.component('BIconDownload', BIconDownload) //the house icon
+Vue.component('BIconUpload', BIconUpload) //the house icon
+
 // SLIM THESE DOWN DEPENDING ON USE!
 import { LayoutPlugin, FormPlugin } from 'bootstrap-vue'
 Vue.use(LayoutPlugin, FormPlugin)
