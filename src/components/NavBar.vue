@@ -21,7 +21,8 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form v-if="!$store.state.project.name == ''">
+          <b-nav-form v-if="$store.state.project.name">
+            <span class="projectname">{{ $store.state.project.name }}</span>
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
@@ -35,7 +36,7 @@
           <b-nav-item-dropdown right v-if="this.$store.state.user">
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
-              <em>User</em>
+              <em>{{ $store.state.user.name }}</em>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="/logout">Sign Out</b-dropdown-item>
@@ -50,7 +51,12 @@
 export default {}
 </script>
 <style scoped>
-.navbar-brand {
+/* .navbar-brand {
   font-size: 1rem;
+} */
+.projectname {
+  color:lightgreen; 
+  font-weight: 600; 
+  padding-right: 10px
 }
 </style>

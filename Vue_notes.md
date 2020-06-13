@@ -21,7 +21,7 @@ router.afterEach(to, from){}
 
 ## IN-COMPONENT ROUTE GUARDS
 
-beforeRouteEnter(to, from, next) // only one that supports passing callback to next()
+beforeRouteEnter(to, from, next) // only one that supports passing callback to gitnext()
 beforeRouteUpdate(to, from, next)
 beforeRouteLeave(to, from, next)
 

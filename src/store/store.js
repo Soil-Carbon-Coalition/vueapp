@@ -13,7 +13,7 @@ export default new Vuex.Store({
   state: {
     user: { id: 1, name: 'Peter', email: 'managingwholes.com@gmail.com' },
     // user: null,
-    project: { id: 3, name: '' },
+    project: { id: 7, name: 'Missouri Basin' },
     observation: {
       // user: this.user,
       // project: this.project

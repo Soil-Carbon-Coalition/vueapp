@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 v-if="loading">Loading . . .</h1>
-    <BaseLmap v-if="!loading" :features="features"></BaseLmap>
+    <BaseMap v-if="!loading" :features="features"></BaseMap>
   </div>
 </template>
 

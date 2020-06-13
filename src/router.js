@@ -18,9 +18,12 @@ import Register from './views/Register.vue'
 import Outbox from './views/Outbox.vue'
 import Inbox from './views/Inbox.vue'
 import UserProfile from './views/UserProfile.vue'
+import NotFound from './views/NotFound.vue'
+import NetworkIssue from './views/NetworkIssue.vue'
 import BaseLmap from './components/BaseLmap.vue'
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
+import Test from './exp/Test.vue'
 
 Vue.use(Router)
 
@@ -123,23 +126,43 @@ const router = new Router({
       path: '/profile',
       name: 'profile',
       component: UserProfile
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound,
+      props: true
+    },
+    {
+      path: '/network-issue',
+      name: 'network-issue',
+      component: NetworkIssue
+    },
+    {
+      path: '*',
+      redirect: { name: '404', params: { resource: 'page' } }
     }
   ]
 })
 
 // // runs before navigating to component; must call next()
 // router.beforeEach((routeTo, routeFrom, next) => {
-//   // If this isn't an initial page load.
-//   if (routeTo.name) {
-//     // Start the route progress bar.
-//     NProgress.start()
-//   }
-//   next()
+  // If this isn't an initial page load.
+  // if (routeTo.name) {
+    // Start the route progress bar.
+    // NProgress.start()
+  // }
+  // next()
 // })
 // // runs right before component is created
-// router.afterEach((routeTo, routeFrom) => {
-//   // Complete the animation of the route progress bar.
-//   NProgress.done()
+// router.afterEach(() => {
+  // Complete the animation of the route progress bar.
+  // NProgress.done()
 // })
 
 export default router

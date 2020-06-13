@@ -9,15 +9,16 @@ const apiClient = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-type': 'application/json'
-  }
+  },
+  timeout: 15000
 })
-// // before a request is made start the nprogress
+// before a request is made start the nprogress bar
 // apiClient.interceptors.request.use(config => {
 //   NProgress.start()
 //   return config
 // })
 
-// // // before a response is returned stop nprogress
+// before a response is returned stop nprogress
 // apiClient.interceptors.response.use(response => {
 //   NProgress.done()
 //   return response
@@ -43,6 +44,9 @@ export default {
   getProject(id) {
     return apiClient.get('/projects/' + id)
     // return resources and maps too?
+  },
+  getMap(id) {
+    return apiClient.get('/maps/' + id)
   },
   postObs(obs) {
     return apiClient.post('/observations/', obs)

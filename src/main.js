@@ -4,6 +4,15 @@ import router from './router'
 import store from './store/store'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import 'nprogress/nprogress.css'
+// import VueProgressBar from 'vue-progressbar'
+
+// Vue.use(VueProgressBar, {
+//   color: 'rgb(143, 255, 199)',
+//   transition: {speed: '0.5s', opacity: '0.6s', termination: 100},
+//   failedColor: 'red',
+//   thickness: '8px'
+// })
 import {
   BootstrapVue,
   IconsPlugin,

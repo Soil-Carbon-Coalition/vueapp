@@ -8,6 +8,7 @@
 <script>
 import ProjectCard from '@/components/ProjectCard.vue'
 import SHService from '@/services/SHService.js'
+import Nprogress from 'nprogress'
 
 export default {
   components: {
@@ -21,10 +22,15 @@ export default {
     }
   },
   created() {
+    Nprogress.start()
     SHService.getProjects()
-      .then(response => (this.projects = response.data))
+      .then(response => {
+        this.projects = response.data
+        Nprogress.done()
+      })
       .catch(error => {
         console.log('There was an error:', error.response)
+        Nprogress.done()
       })
       .finally(() => (this.loading = false))
   }

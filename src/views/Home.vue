@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p v-if="$store.state.user">Welcome back, {{ $store.state.user.email }}!</p>
+  <b-container>
+    <p v-if="$store.state.user">Welcome back, {{ $store.state.user.name }}!</p>
 
     <p>
       <router-link :to="{ name: 'site-list' }">Site List</router-link>
@@ -23,7 +23,7 @@
     <p>
       <router-link :to="{ name: 'lmap' }">Lmap component</router-link>
     </p>
-  </div>
+  </b-container>
 </template>
 
 <script>
