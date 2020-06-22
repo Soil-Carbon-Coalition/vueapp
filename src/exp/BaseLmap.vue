@@ -1,12 +1,10 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">
-        <div id="mapContainer" class="map">
-          <!-- <BasePopup ref="BasePopup" /> -->
-        </div>
-      </div>
-      <div class="col-md-3">
+  <b-container>
+    <b-row>
+      <b-col-md-9>
+        <div id="mapContainer" class="map"></div>
+      </b-col-md-9>
+      <b-col-md-3>
         <div class="form-check" v-for="layer in layers" :key="layer.id">
           <label class="form-check-label">
             <input
@@ -18,9 +16,9 @@
             {{ layer.name }}
           </label>
         </div>
-      </div>
-    </div>
-  </div>
+      </b-col-md-3>
+    </b-row>
+  </b-container>
 </template>
 
 <script>

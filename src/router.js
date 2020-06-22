@@ -20,7 +20,9 @@ import Inbox from './views/Inbox.vue'
 import UserProfile from './views/UserProfile.vue'
 import NotFound from './views/NotFound.vue'
 import NetworkIssue from './views/NetworkIssue.vue'
+import LayerMap from './views/LayerMap.vue'
 import BaseLmap from './components/BaseLmap.vue'
+
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
 import Test from './exp/Test.vue'
@@ -91,7 +93,12 @@ const router = new Router({
       component: ObsEdit,
       props: true
     },
-
+    {
+      path: '/maps/:id',
+      name: 'layer-map',
+      component: LayerMap,
+      props: true
+    },
     {
       path: '/page/',
       name: 'page',
@@ -118,11 +125,6 @@ const router = new Router({
       component: Inbox
     },
     {
-      path: '/Lmap',
-      name: 'lmap',
-      component: BaseLmap
-    },
-    {
       path: '/profile',
       name: 'profile',
       component: UserProfile
@@ -131,6 +133,11 @@ const router = new Router({
       path: '/test',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/lmap',
+      name: 'lmap',
+      component: BaseLmap
     },
     {
       path: '/404',
@@ -152,17 +159,17 @@ const router = new Router({
 
 // // runs before navigating to component; must call next()
 // router.beforeEach((routeTo, routeFrom, next) => {
-  // If this isn't an initial page load.
-  // if (routeTo.name) {
-    // Start the route progress bar.
-    // NProgress.start()
-  // }
-  // next()
+// If this isn't an initial page load.
+// if (routeTo.name) {
+// Start the route progress bar.
+// NProgress.start()
+// }
+// next()
 // })
 // // runs right before component is created
 // router.afterEach(() => {
-  // Complete the animation of the route progress bar.
-  // NProgress.done()
+// Complete the animation of the route progress bar.
+// NProgress.done()
 // })
 
 export default router

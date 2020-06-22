@@ -31,6 +31,7 @@ export default {
       .catch(error => {
         console.log('There was an error:', error.response)
         Nprogress.done()
+        this.$router.push({ name: 'network-issue' })
       })
       .finally(() => (this.loading = false))
   }

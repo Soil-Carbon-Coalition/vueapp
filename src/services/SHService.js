@@ -12,17 +12,6 @@ const apiClient = axios.create({
   },
   timeout: 15000
 })
-// before a request is made start the nprogress bar
-// apiClient.interceptors.request.use(config => {
-//   NProgress.start()
-//   return config
-// })
-
-// before a response is returned stop nprogress
-// apiClient.interceptors.response.use(response => {
-//   NProgress.done()
-//   return response
-// })
 
 export default {
   getSites() {
@@ -47,6 +36,9 @@ export default {
   },
   getMap(id) {
     return apiClient.get('/maps/' + id)
+  },
+  getVectorData(url) {
+    return apiClient.get(url)
   },
   postObs(obs) {
     return apiClient.post('/observations/', obs)

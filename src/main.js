@@ -15,6 +15,7 @@ import 'nprogress/nprogress.css'
 // })
 import {
   BootstrapVue,
+  ImagePlugin,
   IconsPlugin,
   BIconHouse,
   BIconDownload,
@@ -24,6 +25,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(ImagePlugin)
+
 
 Vue.component('BIconHouse', BIconHouse) //the house icon
 Vue.component('BIconDownload', BIconDownload) //the house icon

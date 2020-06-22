@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+Vue_notes.md
 /dist
 
 # local env files

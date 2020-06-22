@@ -1,16 +1,13 @@
 <template>
-  <div>
-    <div class="custom-popup" id="mapContainer"></div>
-  </div>
+  <div class="custom-popup" id="mapContainer"></div>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/leaflet.markercluster.js'
-
-import L from 'leaflet'
 
 export default {
   name: 'BaseMap',
@@ -25,30 +22,42 @@ export default {
   },
   data() {
     return {
-      map: null,
+      leafletMap: null,
       loading: true,
       popupOptions: {
         maxWidth: 500,
         maxHeight: 400
       }
-      
     }
   },
   methods: {
     setupLeafletMap: function() {
-      this.map = L.map('mapContainer').setView([45.259, -117.743], 4)
+      this.leafletMap = L.map('mapContainer').setView([45.259, -117.743], 4)
 
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution:
-          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(this.map)
+          '&copy; <a href="http://osm.org/copyright">OpenStreetleafletMap</a> contributors'
+      }).addTo(this.leafletMap)
     },
+
     makeTable: function(obj) {
       var popup = ''
       popup += '<table>'
       Object.keys(obj).forEach(function(key) {
         if (obj[key]) {
-          popup += '<tr><td>' + key + ':</td><td>' + obj[key] + '</td></tr>'
+          if (
+            String(obj[key]).endsWith('.jpg') ||
+            String(obj[key]).endsWith('.png')
+          ) {
+            popup +=
+              '<tr><td>' +
+              key +
+              ':</td><td><img src="' +
+              obj[key] +
+              '" width=200 /></td></tr>'
+          } else {
+            popup += '<tr><td>' + key + ':</td><td>' + obj[key] + '</td></tr>'
+          }
         }
       })
       popup += '</table>'
@@ -59,27 +68,24 @@ export default {
         layer
           .bindTooltip(feature.properties.name)
           .bindPopup(this.makeTable(feature.properties), this.popupOptions)
-      }
-      else {
+      } else {
         layer
           .bindTooltip(feature.properties.sitename)
           .bindPopup(this.makeTable(feature.properties), this.popupOptions)
       }
     },
-    
+
     addData: function() {
       var myfeatures = L.geoJSON(this.features, {
         onEachFeature: this.onEachFeature
       })
-      if (Array.isArray(this.features)){
-      var markers = L.markerClusterGroup()
-      markers.addLayer(myfeatures).addTo(this.map)
+      if (Array.isArray(this.features)) {
+        var markers = L.markerClusterGroup()
+        markers.addLayer(myfeatures).addTo(this.leafletMap)
+      } else {
+        myfeatures.addTo(this.leafletMap)
       }
-      else
-      {
-        myfeatures.addTo(this.map)
-      }
-      this.map.fitBounds(myfeatures.getBounds(), {
+      this.leafletMap.fitBounds(myfeatures.getBounds(), {
         padding: [50, 50]
       })
       this.loading = false
@@ -93,8 +99,8 @@ export default {
     // this.addStatic()
   },
   beforeDestroy() {
-    if (this.map) {
-      this.map.remove()
+    if (this.leafletMap) {
+      this.leafletMap.remove()
     }
   }
 }
@@ -105,11 +111,8 @@ export default {
   width: 80vw;
   height: 100vh;
 }
-.custom-popup .leaflet-popup-content-wrapper {
-  background: #eee;
-  color: #000;
-  font-size: 14px;
-  line-height: 20px;
-  border: hotpink;
+
+tr:nth-child(even) {
+  background-color: #ddd;
 }
 </style>
