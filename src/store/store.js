@@ -1,16 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
+
 import * as notification from '@/store/modules/notification.js'
 // import SHService from '@/services/SHService.js'
 
 // COULD USE STORE DIRECTORY, MODULES DIRECTORY, SEPARATE FILES WITHIN TO MODULARIZE THE STORE
 Vue.use(Vuex)
-
+const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   modules: {
+    // auth,
     notification
+    // password,
+    // signup
   },
+  strict: debug,
+  plugins: debug ? [createLogger()] : [],
   state: {
+    // authUser: {},
+    // isAuthenticated: false,
+    // jwt: localStorage.getItem('token'),
+    // endpoints: {
+    //   // TODO: Remove hardcoding of dev endpoints
+    //   obtainJWT: 'http://127.0.0.1:8000/api/auth/obtain_token/',
+    //   refreshJWT: 'http://127.0.0.1:8000/api/auth/refresh_token/',
+    //   baseUrl: 'http://127.0.0.1:8000/api/'
+    // },
     user: { id: 1, name: 'Peter', email: 'managingwholes.com@gmail.com' },
     // user: null,
     project: { id: 7, name: 'Missouri Basin' },
@@ -30,45 +46,25 @@ export default new Vuex.Store({
       entered: false
     },
     outbox: [1, 3, 5, 6, 7],
-    inbox: [1, 2],
-    products: [
-      { id: 1, name: 'Banana', price: 20 },
-      { id: 2, name: 'Apple', price: 10 },
-      { id: 3, name: 'Boojum', price: 'unknown' },
-      { id: 4, name: 'Coffee', price: 35 },
-      { id: 5, name: 'Tobacco', price: 4 },
-      { id: 6, name: 'Cigar', price: 14 }
-    ]
+    inbox: [1, 2]
   },
-  getters: {
-    saleProducts: state => {
-      var saleProducts = state.products.map(product => {
-        return {
-          name: '**' + product.name + '**',
-          price: (product.price * 0.67).toFixed(2)
-        }
-      })
-      return saleProducts
-    },
-    cheapProducts: state => {
-      var cheapProducts = state.products.filter(product => {
-        return product.price < 10
-      })
-
-      return cheapProducts
-    },
-    getProductById: state => id => {
-      return state.products.find(product => product.id === id)
-    }
-  },
+  getters: {},
   mutations: {
-    INCREMENT_PRICE: (state, payload) => {
-      state.products.forEach(product => {
-        product.price += payload
-      })
-    }
-  },
-  // the arg to this function involves object destructuring
+    // setAuthUser(state, { authUser, isAuthenticated }) {
+    //   Vue.set(state, 'authUser', authUser)
+    //   Vue.set(state, 'isAuthenticated', isAuthenticated)
+    // },
+    // updateToken(state, newToken) {
+    //   // TODO: For security purposes, take localStorage out of the project.
+    //   localStorage.setItem('token', newToken)
+    //   state.jwt = newToken
+    // },
+    // removeToken(state) {
+    //   // TODO: For security purposes, take localStorage out of the project.
+    //   localStorage.removeItem('token')
+    //   state.jwt = null
+    // }
+  }, // the arg to this function involves object destructuring
   actions: {
     incrementPrice({ state, commit }, payload) {
       if (state.user) {

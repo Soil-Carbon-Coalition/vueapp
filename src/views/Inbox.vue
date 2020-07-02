@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <b-container>
     <h1>Inbox</h1>
     <p>
-      This is an array in STORE.
-      A list (ARRAY) got from STORE
-      of inbox objects to make repeat observations on
+      This is an array in STORE and localForage of downloaded Observation
+      objects to make repeat observations on. See
+      https://medium.com/daily-now/optimistic-offline-first-apps-with-vuex-d8a412e105a7
+      and
+      https://netterminalmachine.com/blog/2018/persisting-a-vuex-store-to-indexed-db
     </p>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -15,5 +17,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

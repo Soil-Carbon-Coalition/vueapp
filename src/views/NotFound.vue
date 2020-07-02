@@ -1,10 +1,9 @@
 <template>
   <b-container>
-    <h1>Oops!</h1>
+    <h1>Lost!</h1>
     <p>
       The
-      
-        <em>{{ resource }}</em>
+      <em>{{ resource }}</em>
       you're looking for does not exist.
     </p>
     <router-link :to="{ name: 'home' }">Home page with menu</router-link>

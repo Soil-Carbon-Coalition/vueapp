@@ -27,7 +27,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ImagePlugin)
 
-
 Vue.component('BIconHouse', BIconHouse) //the house icon
 Vue.component('BIconDownload', BIconDownload) //the house icon
 Vue.component('BIconUpload', BIconUpload) //the house icon

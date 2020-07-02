@@ -12,20 +12,51 @@ import ObsEdit from './views/ObsEdit.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import ResourceList from './views/ResourceList.vue'
+import ResourceDetail from './views/ResourceDetail.vue'
+import ResourceEdit from './views/ResourceEdit.vue'
 import Search from './views/Search.vue'
-import Login from './views/Login.vue'
-import Register from './views/Register.vue'
 import Outbox from './views/Outbox.vue'
 import Inbox from './views/Inbox.vue'
 import UserProfile from './views/UserProfile.vue'
 import NotFound from './views/NotFound.vue'
 import NetworkIssue from './views/NetworkIssue.vue'
 import LayerMap from './views/LayerMap.vue'
-import BaseLmap from './components/BaseLmap.vue'
+import Locate from './views/Locate.vue'
+// import Login from './views/Login.vue'
+// import Register from './views/Register.vue'
+// import PasswordReset from './views/PasswordReset'
+// import PasswordResetConfirm from './views/PasswordResetConfirm'
+// import VerifyEmail from './views/VerifyEmail'
 
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
 import Test from './exp/Test.vue'
+// import store from './store/store.js'
+
+// const requireAuthenticated = (to, from, next) => {
+//   store.dispatch('auth/initialize').then(() => {
+//     if (!store.getters['auth/isAuthenticated']) {
+//       next('/login')
+//     } else {
+//       next()
+//     }
+//   })
+// }
+
+// const requireUnauthenticated = (to, from, next) => {
+//   store.dispatch('auth/initialize').then(() => {
+//     if (store.getters['auth/isAuthenticated']) {
+//       next('/home')
+//     } else {
+//       next()
+//     }
+//   })
+// }
+
+// const redirectLogout = (to, from, next) => {
+//   store.dispatch('auth/logout').then(() => next('/login'))
+// }
 
 Vue.use(Router)
 
@@ -36,6 +67,11 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/locate',
+      name: 'locate',
+      component: Locate
     },
     {
       path: '/search',
@@ -77,6 +113,23 @@ const router = new Router({
       props: true
     },
     {
+      path: '/resources/',
+      name: 'resource-list',
+      component: ResourceList
+    },
+    {
+      path: '/resources/:id',
+      name: 'resource-detail',
+      component: ResourceDetail,
+      props: true
+    },
+    {
+      path: '/resources/new',
+      name: 'resource-edit',
+      component: ResourceEdit,
+      props: true
+    },
+    {
       path: '/observations/',
       name: 'obs-list',
       component: ObsList
@@ -104,16 +157,7 @@ const router = new Router({
       name: 'page',
       component: Page
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
+
     {
       path: '/outbox',
       name: 'outbox',
@@ -134,11 +178,31 @@ const router = new Router({
       name: 'test',
       component: Test
     },
-    {
-      path: '/lmap',
-      name: 'lmap',
-      component: BaseLmap
-    },
+    // {
+    //   path: '/password_reset',
+    //   component: PasswordReset
+    // },
+    // {
+    //   path: '/password_reset/:uid/:token',
+    //   component: PasswordResetConfirm
+    // },
+    // {
+    //   path: '/register',
+    //   component: Register
+    // },
+    // {
+    //   path: '/register/:key',
+    //   component: VerifyEmail
+    // },
+    // {
+    //   path: '/login',
+    //   component: Login,
+    //   beforeEnter: requireUnauthenticated
+    // },
+    // {
+    //   path: '/logout',
+    //   beforeEnter: redirectLogout
+    // },
     {
       path: '/404',
       name: '404',

@@ -34,6 +34,12 @@ export default {
     return apiClient.get('/projects/' + id)
     // return resources and maps too?
   },
+  getResources() {
+    return apiClient.get('/resources/')
+  },
+  getResource(id) {
+    return apiClient.get('/resources/' + id)
+  },
   getMap(id) {
     return apiClient.get('/maps/' + id)
   },

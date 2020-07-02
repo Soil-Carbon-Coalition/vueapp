@@ -34,6 +34,7 @@
 // CREATEOBS FUNCTION: GET STATE FOR SITE, OBSTYPE, USER, PROJECT, ADD KV. then
 // MAKE POST REQUEST W AXIOS, WAIT TILL RESPONSE RETURNS, then createFreshObsObject if there is no
 // error.
+// IF USER LEAVES PAGE BEFORE SUBMIT, USE MODAL FOR CONFIRMATION
 // import store from '@/store/store.js'
 import SHService from '@/services/SHService'
 
@@ -48,8 +49,6 @@ export default {
   },
   methods: {
     createObs() {
-      //   let obs = this
-      //   this.obs = this.createFreshObs()
       SHService.postObs(this.obs)
         .then(function(response) {
           console.log(response.data)
@@ -71,7 +70,7 @@ export default {
     // USE SOMETHING ALONG THESE LINES to commit an action with store
     // createNewObs({ commit, dispatch }, obs) {
     //   return SHService.postObs(obs).then(() => {
-    //     // commit('ADD_EVENT', event)
+    //     // commit('ADD_OBS', obs)
     //     const notification = {
     //       type: 'success',
     //       message: 'Your observation has been added to your Outbox!'
