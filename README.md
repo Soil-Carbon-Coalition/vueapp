@@ -1,4 +1,4 @@
-A front end for the web app [soilhealth.app] which will run on a Django Rest Framework backend: [https://github.com/Soil-Carbon-Coalition/soilhealth.app]
+A front end for the web app [https://soilhealth.app] which will run on a Django Rest Framework backend: [https://github.com/Soil-Carbon-Coalition/soilhealth.app]
 
 # rwv
 
