@@ -1,17 +1,12 @@
 <template>
   <b-container v-if="!loading">
     <b-row>
-      <h3>
-        Showing Observation # {{ feature.id }} on site:
-        {{ feature.properties.sitename }}:
-        <br />
-        Type: {{ feature.properties.type }}
-      </h3>
+      <h3>{{ feature.properties.label }} on {{ feature.properties.sitename }}</h3>
       <p>{{ feature.properties }}</p>
       <p>Observer: {{ feature.properties.observer }}</p>
       <BaseMap v-if="!loading" :features="feature"></BaseMap>
     </b-row>
-    <b-row> </b-row>
+    <b-row></b-row>
   </b-container>
 </template>
 <script>

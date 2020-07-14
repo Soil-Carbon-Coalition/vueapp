@@ -5,17 +5,22 @@ import axios from 'axios'
 
 const apiClient = axios.create({
   baseURL: 'http://127.0.0.1:8000/api',
+
+  // try this for csrf:
+  // axios.defaults.xsrfCookieName = 'csrftoken'
+  // axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
   withCredentials: false,
   headers: {
     Accept: 'application/json',
     'Content-type': 'application/json'
   },
-  timeout: 15000
+  timeout: 25000
 })
 
 export default {
-  getSites() {
-    return apiClient.get('/sites/')
+  getSites(params) {
+    return apiClient.get('/sites/', params)
   },
   getSite(id) {
     return apiClient.get('/sites/' + id)

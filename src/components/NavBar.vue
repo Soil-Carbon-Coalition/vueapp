@@ -23,8 +23,6 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-form v-if="$store.state.project.name">
             <span class="projectname">{{ $store.state.project.name }}</span>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
 
           <b-nav-item-dropdown text="Menu" right>
@@ -55,8 +53,8 @@ export default {}
   font-size: 1rem;
 } */
 .projectname {
-  color:lightgreen; 
-  font-weight: 600; 
-  padding-right: 10px
+  color: lightgreen;
+  font-weight: 600;
+  padding-right: 10px;
 }
 </style>

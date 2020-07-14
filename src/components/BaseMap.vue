@@ -8,6 +8,7 @@ import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/leaflet.markercluster.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default {
   name: 'BaseMap',
@@ -63,15 +64,39 @@ export default {
       popup += '</table>'
       return popup
     },
+    makeList: function(obj) {
+      var popup = '<div>'
+      popup += '<ul class="list-group">'
+      if (obj.length) {
+        for (var i = 0; i < obj.length; i++) {
+          popup +=
+            '<a href="/observations/' +
+            obj[i].id +
+            '"><li class="list-group-item">' +
+            obj[i].label +
+            '</li></a>'
+        }
+        popup += '</ul></div>'
+      } else {
+        popup = '<p>No observations for this site</p>'
+      }
+      return popup
+    },
     onEachFeature: function(feature, layer) {
       if (feature.properties.name) {
         layer
           .bindTooltip(feature.properties.name)
-          .bindPopup(this.makeTable(feature.properties), this.popupOptions)
+          .bindPopup(
+            this.makeList(feature.properties.site_observations),
+            this.popupOptions
+          )
       } else {
         layer
-          .bindTooltip(feature.properties.sitename)
-          .bindPopup(this.makeTable(feature.properties), this.popupOptions)
+          // .bindTooltip(feature.properties.sitename)
+          .bindPopup(
+            this.makeList(feature.properties.site_observations),
+            this.popupOptions
+          )
       }
     },
 

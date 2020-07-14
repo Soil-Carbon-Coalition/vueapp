@@ -6,7 +6,7 @@ import Home from './views/Home.vue'
 import SiteList from './views/SiteList.vue'
 import SiteDetail from './views/SiteDetail.vue'
 import SiteEdit from './views/SiteEdit.vue'
-import ObsList from './views/ObsList.vue'
+import ObsMap from './views/ObsMap.vue'
 import ObsDetail from './views/ObsDetail.vue'
 import ObsEdit from './views/ObsEdit.vue'
 import ProjectList from './views/ProjectList.vue'
@@ -15,7 +15,6 @@ import ProjectEdit from './views/ProjectEdit.vue'
 import ResourceList from './views/ResourceList.vue'
 import ResourceDetail from './views/ResourceDetail.vue'
 import ResourceEdit from './views/ResourceEdit.vue'
-import Search from './views/Search.vue'
 import Outbox from './views/Outbox.vue'
 import Inbox from './views/Inbox.vue'
 import UserProfile from './views/UserProfile.vue'
@@ -74,11 +73,6 @@ const router = new Router({
       component: Locate
     },
     {
-      path: '/search',
-      name: 'search',
-      component: Search
-    },
-    {
       path: '/sites/',
       name: 'site-list',
       component: SiteList
@@ -131,8 +125,8 @@ const router = new Router({
     },
     {
       path: '/observations/',
-      name: 'obs-list',
-      component: ObsList
+      name: 'obs-map',
+      component: ObsMap
     },
     {
       path: '/observations/:id',
