@@ -15,7 +15,7 @@ const apiClient = axios.create({
     Accept: 'application/json',
     'Content-type': 'application/json'
   },
-  timeout: 25000
+  timeout: 35000
 })
 
 export default {
@@ -53,5 +53,8 @@ export default {
   },
   postObs(obs) {
     return apiClient.post('/observations/', obs)
+  },
+  putUser(id) {
+    return apiClient.put('/users/' + id)
   }
 }

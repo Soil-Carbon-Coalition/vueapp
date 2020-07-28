@@ -9,7 +9,7 @@
       <router-link :to="{ name: 'site-edit' }">Add site</router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'obs-map' }">Observation List</router-link>
+      <router-link :to="{ name: 'obs-map' }">Observation Map and Search</router-link>
     </p>
     <p>
       <router-link :to="{ name: 'obs-edit' }">Add Observation</router-link>
@@ -19,9 +19,6 @@
     </p>
     <p>
       <router-link :to="{ name: 'outbox' }">Your outbox</router-link>
-    </p>
-    <p>
-      <router-link :to="{ name: 'lmap' }">Lmap component</router-link>
     </p>
   </b-container>
 </template>

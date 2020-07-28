@@ -1,58 +1,103 @@
 <template>
-  <div>
-    <h1>Test page</h1>
-    <p>{{ info }}</p>
-  </div>
+  <b-container fluid>
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form-group label="Event name" label-for="input-1" description="think of a good one">
+        <b-form-input
+          id="input-1"
+          type="text"
+          v-model="form.name"
+          placeholder="event name"
+          trim
+          required
+        />
+      </b-form-group>
+      <b-form-group
+        label="Event description:"
+        label-for="input-2"
+        description="purpose and description"
+      >
+        <b-form-textarea
+          id="input-2"
+          v-model="form.description"
+          size="lg"
+          rows="5"
+          placeholder="event purpose and description"
+          required
+        />
+      </b-form-group>
+      <b-form-group label="number attending" label-for="input-3">
+        <b-form-input
+          id="input-3"
+          label="Number attending"
+          type="number"
+          v-model="form.number_attending"
+          placeholder="0"
+        />
+      </b-form-group>
+      <b-form-group label="date" label-for="input-4" description="date of event">
+        <b-form-datepicker id="input-4" v-model="form.date" class="mb-2"></b-form-datepicker>
+        <p>Value: '{{ form.date }}'</p>
+      </b-form-group>
+      <b-button type="submit" variant="primary" class="m-3">Submit</b-button>
+      <b-button type="reset" variant="danger" class="m-3">Reset</b-button>
+    </b-form>
+    <b-card class="mt-3" header="Form Data Result">
+      <pre class="m-0">{{ form }}</pre>
+    </b-card>
+  </b-container>
 </template>
 
 <script>
-import axios from 'axios'
-// import SHService from '@/services/SHService.js'
 export default {
-  name: 'Test',
   data() {
     return {
-      // loading: true,
-      info: null,
-      obs: {
-        observer: 1,
-        type: 19,
-        site: 1073,
-        project: 7,
-        kv: { something: 43, b: 'there goes a good man' }
+      form: {
+        name: '',
+        description: '',
+        number_attending: null,
+        date: ''
+      },
+      show: true,
+      mycomponent: {
+        name: 'SimpleForm',
+        template: `
+          <form action @submit.prevent = "submit">
+          <input name="first" type="text" v-model="first">
+          <label for "first" class="active">First Name</label>
+          <input name="last" type="text" v-model="last">
+          <label for "last">Last Name</label>
+          <button type="submit">Submit></button></form>
+            `,
+        data: { first: 'Pete', last: 'Donvan' },
+        script: `
+          window.SimpleForm = {
+            methods: {
+              submit() {
+                console.log(this.first + '' this.last)
+              }
+            }
+            }`
       }
     }
   },
   methods: {
-    postObs: function() {
-      axios.post('http://127.0.0.1:8000/api/observations/', this.obs)
-
-      // axios
-      //   .post('/user', {
-      //     firstName: 'Fred',
-      //     lastName: 'Flintstone'
-      //   })
-      //   .then(function(response) {
-      //     console.log(response)
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+    onSubmit(evt) {
+      evt.preventDefault()
+      alert(JSON.stringify(this.form))
+    },
+    onReset(evt) {
+      evt.preventDefault()
+      // Reset our form values
+      this.form.name = ''
+      this.form.description = ''
+      this.form.number_attending = null
+      this.form.date = ''
+      // Trick to reset/clear native browser form validation state
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     }
-  },
-  mounted() {
-    this.postObs()
   }
-  //   SHService.getObss()
-  //     // vuemastery shows this as response => {} which doesn't work!!! parens work
-  //     // the response data will normally be a FeatureCollection with a features array
-  //     .then(response => {
-  //       this.features = response.data.features
-  //     })
-  //     .catch(error => {
-  //       console.log('There was an error:', error.response)
-  //     })
-  //     .finally(() => (this.loading = false))
-  // }
 }
 </script>

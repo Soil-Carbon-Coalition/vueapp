@@ -7,13 +7,13 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
 export default {
-  name: 'BasePointMap',
   props: {
     position: {
       type: Array,
       required: true
     }
   },
+
   data() {
     return {
       leafletMap: null
@@ -21,12 +21,16 @@ export default {
   },
   methods: {
     setupLeafletMap: function() {
-      this.leafletMap = L.map('mapContainer').setView(this.position, 14)
+      this.leafletMap = L.map('mapContainer').setView(this.position, 12)
       L.marker(this.position).addTo(this.leafletMap)
 
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      //   attribution:
+      //     '&copy; <a href="http://osm.org/copyright">OpenStreetleafletMap</a> contributors'
+      // }).addTo(this.leafletMap)
+      L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
         attribution:
-          '&copy; <a href="http://osm.org/copyright">OpenStreetleafletMap</a> contributors'
+          "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>, under <a href='http://www.openstreetmap.org/copyright'>ODbL</a>."
       }).addTo(this.leafletMap)
     },
     addMarker: function() {
@@ -51,6 +55,6 @@ export default {
 <style scoped>
 #mapContainer {
   width: 40vw;
-  height: 40vh;
+  height: 80vh;
 }
 </style>

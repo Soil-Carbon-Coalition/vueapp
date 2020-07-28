@@ -28,7 +28,7 @@ NEED TO TURN OFF GEOLOCATION FOR 2 AND 3
     <p>GPS accuracy: {{ this.accuracy }}</p>
 
     <button type="submit" @click="endWatch">Clear watch</button>
-    <BasePointMap v-if="!loading" :position="position"></BasePointMap>
+    <BaseLocateMap v-if="!loading" :position="position"></BaseLocateMap>
     <!-- <BasePointMap :position="position"></BasePointMap> -->
   </b-container>
 
@@ -43,6 +43,7 @@ NEED TO TURN OFF GEOLOCATION FOR 2 AND 3
 <script>
 export default {
   name: 'Locate.vue',
+
   data() {
     return {
       loading: true,

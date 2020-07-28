@@ -191,6 +191,8 @@ A GOOD WAY to add some logic and prompts to interactivity? Use route guards to i
 
 The app should be optimized for entering data on smaller devices in bright sunlight: high contrast, fairly large type, pages or views relatively simple. Tried Vuetify a little, went to bootstrap-vue as it may be more easily customizable, has some handy icons, etc.
 
+CSS OVERVIEW is new in Chrome Dev tools, just enabled in Settings. This can show you all elements, which are unused, etc.
+
 # LEAFLET
 
 Webpack doesn't use the right URL for Leaflet default markers. Inserted a recommended fix in main.js
@@ -198,3 +200,7 @@ Webpack doesn't use the right URL for Leaflet default markers. Inserted a recomm
 Don't create the Leaflet map BEFORE the axios().then has returned the server data. Use a v-if="!loading" for the map component to wait for axios to complete.
 
 Cannot seem to get leaflet-omnivore working.
+
+# JAVASCRIPT NOTEBOOK
+
+https://observablehq.com/d/c7ee1dfa21e411bf

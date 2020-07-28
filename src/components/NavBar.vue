@@ -29,12 +29,13 @@
             <b-dropdown-item to="/projects">Projects</b-dropdown-item>
             <b-dropdown-item to="/observations">Observations</b-dropdown-item>
             <b-dropdown-item to="/sites">Sites</b-dropdown-item>
+            <b-dropdown-item to="/resources">Resources</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right v-if="this.$store.state.user">
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
-              <em>{{ $store.state.user.name }}</em>
+              <em>{{ $store.state.user.full_name }}</em>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="/logout">Sign Out</b-dropdown-item>

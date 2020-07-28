@@ -41,63 +41,30 @@ export default {
       }).addTo(this.leafletMap)
     },
 
-    makeTable: function(obj) {
-      var popup = ''
-      popup += '<table>'
-      Object.keys(obj).forEach(function(key) {
-        if (obj[key]) {
-          if (
-            String(obj[key]).endsWith('.jpg') ||
-            String(obj[key]).endsWith('.png')
-          ) {
-            popup +=
-              '<tr><td>' +
-              key +
-              ':</td><td><img src="' +
-              obj[key] +
-              '" width=200 /></td></tr>'
-          } else {
-            popup += '<tr><td>' + key + ':</td><td>' + obj[key] + '</td></tr>'
-          }
-        }
-      })
-      popup += '</table>'
-      return popup
-    },
     makeList: function(obj) {
-      var popup = '<div>'
-      popup += '<ul class="list-group">'
+      var popup = '<table>'
       if (obj.length) {
         for (var i = 0; i < obj.length; i++) {
           popup +=
-            '<a href="/observations/' +
+            '<tr><td><a href="/observations/' +
             obj[i].id +
-            '"><li class="list-group-item">' +
+            '/">' +
             obj[i].label +
-            '</li></a>'
+            '</a></td></tr>'
         }
-        popup += '</ul></div>'
+        popup += '</table>'
       } else {
         popup = '<p>No observations for this site</p>'
       }
       return popup
     },
     onEachFeature: function(feature, layer) {
-      if (feature.properties.name) {
-        layer
-          .bindTooltip(feature.properties.name)
-          .bindPopup(
-            this.makeList(feature.properties.site_observations),
-            this.popupOptions
-          )
-      } else {
-        layer
-          // .bindTooltip(feature.properties.sitename)
-          .bindPopup(
-            this.makeList(feature.properties.site_observations),
-            this.popupOptions
-          )
-      }
+      layer
+        .bindTooltip(feature.properties.name)
+        .bindPopup(
+          this.makeList(feature.properties.site_observations),
+          this.popupOptions
+        )
     },
 
     addData: function() {
@@ -131,13 +98,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #mapContainer {
   width: 80vw;
   height: 100vh;
 }
 
+tr,
+td {
+  padding: 5px;
+}
 tr:nth-child(even) {
-  background-color: #ddd;
+  background-color: #eee;
 }
 </style>

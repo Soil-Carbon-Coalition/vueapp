@@ -4,6 +4,7 @@
       <h2>{{ project.name }}</h2>
       <p>{{ project.geography }}</p>
       <p>{{ project.description }}</p>
+      <p>{{ project.ProjectCoordinator }}</p>
     </b-card>
   </router-link>
 </template>

@@ -1,10 +1,19 @@
 <template>
   <b-container v-if="!loading">
     <b-row>
-      <h3>{{ feature.properties.label }} on {{ feature.properties.sitename }}</h3>
-      <p>{{ feature.properties }}</p>
-      <p>Observer: {{ feature.properties.observer }}</p>
-      <BaseMap v-if="!loading" :features="feature"></BaseMap>
+      <h3>{{ feature.properties.Label }} on {{ feature.properties.Site }}</h3>
+    </b-row>
+    <b-row>
+      <table width="50vw">
+        <tr v-for="(value, name, index) in feature.properties" :key="index">
+          <td v-if="value">
+            <b>{{ name }}:</b>
+          </td>
+          <td v-if="value">{{ value }}</td>
+        </tr>
+      </table>
+
+      <BaseFeatureMap v-if="!loading" :feature="feature"></BaseFeatureMap>
     </b-row>
     <b-row></b-row>
   </b-container>
@@ -44,3 +53,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+tr,
+td {
+  padding: 12px;
+}
+tr:nth-child(even) {
+  background-color: rgba(240, 240, 240, 0.6);
+}
+</style>

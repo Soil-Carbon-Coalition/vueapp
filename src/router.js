@@ -8,7 +8,6 @@ import SiteDetail from './views/SiteDetail.vue'
 import SiteEdit from './views/SiteEdit.vue'
 import ObsMap from './views/ObsMap.vue'
 import ObsDetail from './views/ObsDetail.vue'
-import ObsEdit from './views/ObsEdit.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
@@ -22,16 +21,11 @@ import NotFound from './views/NotFound.vue'
 import NetworkIssue from './views/NetworkIssue.vue'
 import LayerMap from './views/LayerMap.vue'
 import Locate from './views/Locate.vue'
-// import Login from './views/Login.vue'
-// import Register from './views/Register.vue'
-// import PasswordReset from './views/PasswordReset'
-// import PasswordResetConfirm from './views/PasswordResetConfirm'
-// import VerifyEmail from './views/VerifyEmail'
-
+import Photo from './obstypes/Photo.vue'
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
 import Test from './exp/Test.vue'
-// import store from './store/store.js'
+import store from './store/store.js'
 
 // const requireAuthenticated = (to, from, next) => {
 //   store.dispatch('auth/initialize').then(() => {
@@ -78,7 +72,7 @@ const router = new Router({
       component: SiteList
     },
     {
-      path: '/sites/:id',
+      path: '/sites/:id/',
       name: 'site-detail',
       component: SiteDetail,
       props: true
@@ -95,7 +89,7 @@ const router = new Router({
       component: ProjectList
     },
     {
-      path: '/projects/:id',
+      path: '/projects/:id/',
       name: 'project-detail',
       component: ProjectDetail,
       props: true
@@ -112,7 +106,7 @@ const router = new Router({
       component: ResourceList
     },
     {
-      path: '/resources/:id',
+      path: '/resources/:id/',
       name: 'resource-detail',
       component: ResourceDetail,
       props: true
@@ -129,19 +123,13 @@ const router = new Router({
       component: ObsMap
     },
     {
-      path: '/observations/:id',
+      path: '/observations/:id/',
       name: 'obs-detail',
       component: ObsDetail,
       props: true
     },
     {
-      path: '/observations/new',
-      name: 'obs-edit',
-      component: ObsEdit,
-      props: true
-    },
-    {
-      path: '/maps/:id',
+      path: '/maps/:id/',
       name: 'layer-map',
       component: LayerMap,
       props: true
@@ -165,38 +153,21 @@ const router = new Router({
     {
       path: '/profile',
       name: 'profile',
-      component: UserProfile
+      component: UserProfile,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/test',
       name: 'test',
       component: Test
     },
-    // {
-    //   path: '/password_reset',
-    //   component: PasswordReset
-    // },
-    // {
-    //   path: '/password_reset/:uid/:token',
-    //   component: PasswordResetConfirm
-    // },
-    // {
-    //   path: '/register',
-    //   component: Register
-    // },
-    // {
-    //   path: '/register/:key',
-    //   component: VerifyEmail
-    // },
-    // {
-    //   path: '/login',
-    //   component: Login,
-    //   beforeEnter: requireUnauthenticated
-    // },
-    // {
-    //   path: '/logout',
-    //   beforeEnter: redirectLogout
-    // },
+    {
+      path: '/photo',
+      name: 'photo',
+      component: Photo
+    },
     {
       path: '/404',
       name: '404',
@@ -215,19 +186,21 @@ const router = new Router({
   ]
 })
 
-// // runs before navigating to component; must call next()
-// router.beforeEach((routeTo, routeFrom, next) => {
-// If this isn't an initial page load.
-// if (routeTo.name) {
-// Start the route progress bar.
-// NProgress.start()
+//add this meta to routes requiring auth:
+// meta: {
+//   requiresAuth: true
 // }
-// next()
-// })
-// // runs right before component is created
-// router.afterEach(() => {
-// Complete the animation of the route progress bar.
-// NProgress.done()
-// })
 
+//a basic route guard for auth
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.authUser) {
+      next()
+      return
+    }
+    next('accounts/login')
+  } else {
+    next()
+  }
+})
 export default router
