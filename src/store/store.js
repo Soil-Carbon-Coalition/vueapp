@@ -55,7 +55,11 @@ export default new Vuex.Store({
 
     site: {
       id: 1071,
-      sitename: 'Red Willow Pond'
+      sitename: 'Red Willow Pond',
+      geometry: {
+        type: 'Point',
+        coordinates: [-122.97848, 38.351168]
+      }
     },
     observation: {
       obsType: {
@@ -91,8 +95,8 @@ export default new Vuex.Store({
     SET_PROJECT(state, project) {
       Vue.set(state, 'project', project)
     },
-    SET_DEFAULT_PROJECT(state, authUser) {
-      Vue.set(state, 'authUser', project)
+    SET_DEFAULT_PROJECT(state, project) {
+      Vue.set(state, 'project', project)
     },
     SET_SITE(state, site) {
       Vue.set(state, 'site', site)

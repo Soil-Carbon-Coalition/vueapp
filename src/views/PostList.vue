@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <p>A list of available project resources</p>
+    <p>A list of available project posts</p>
   </b-container>
 </template>
 

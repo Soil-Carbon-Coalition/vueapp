@@ -5,6 +5,7 @@ import store from './store/store'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import 'nprogress/nprogress.css'
+import '@/obstypes' //imports all components registered in obstypes/index.js
 // import VueProgressBar from 'vue-progressbar'
 
 // Vue.use(VueProgressBar, {
@@ -48,6 +49,13 @@ const requireComponent = require.context(
   false,
   /Base[A-Z]\w+\.(vue|js)$/
 )
+// let obstypesComponent = require.context(
+//   './obstypes',
+//   false,
+//   /[A-Z]\w+\.(vue|js)$/
+// )
+
+// const regComponent = requireComponent.concat(obstypesComponent)
 
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
@@ -58,6 +66,7 @@ requireComponent.keys().forEach(fileName => {
 
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
+
 // this is to correct an issue where default icons are not shown
 // eslint-disable-next-line
 delete L.Icon.Default.prototype._getIconUrl

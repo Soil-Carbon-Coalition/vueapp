@@ -1,116 +1,142 @@
 <template>
   <b-container>
-    <h1>Add location</h1>
-    <input v-model="this.name" placeholder="Name here" />
+    <h1>Add a location or site</h1>
+    <b-form-input v-model="name" placeholder="Enter site name (required)" required />
 
-    <br />
-    <div class="mt-2">Position: {{ this.position }}</div>
+    <div v-if="locationMode != 'drawPolygon'">
+      <label for="lat">Latitude:</label>
+      <b-form-input id="lat" type="number" step=".0000001" v-model="e.latlng.lat" />
+      <label for="lng">Longitude:</label>
+      <b-form-input id="lng" type="number" step=".0000001" v-model="e.latlng.lng" />
+      <label for="acc">Accuracy in meters:</label>
+      <b-form-input id="acc" type="number" v-model="e.accuracy" />
+    </div>
 
-    <!-- 
-3 RADIO BUTTONS CONTROLLING LOCATION MODE.
-1. LOCATE FROM gps (DEFAULT)
-2. LOCATE BY ENTERING COORDS
-3. LOCATE BY CLICKING ON MAP
-NEED TO TURN OFF GEOLOCATION FOR 2 AND 3
+    <b-form-group label="Choose a location mode:">
+      <b-form-radio-group
+        id="btn-radios-3"
+        v-model="locationMode"
+        buttons
+        stacked
+        button-variant="outline-primary"
+        size="lg"
+        name="radio-btn-stacked"
+        @change="check"
+      >
+        <b-form-radio value="mapLocate">GPS</b-form-radio>
+        <b-form-radio value="clickMap" @checked="clickMap">Click on map</b-form-radio>
+        <b-form-radio value="enterCoords" @checked="enterCoordinates">Enter coordinates</b-form-radio>
+        <b-form-radio value="drawPolygon">Draw a polygon</b-form-radio>
+      </b-form-radio-group>
+    </b-form-group>
 
-    -->
-
-    <p>
-      Latitude:
-      <b-form-input type="number" v-model="this.latitude" />
-    </p>
-    <p>
-      Longitude:
-      <b-form-input type="number" v-model="this.longitude" />
-    </p>
-    <button type="submit" @click="this.loglat">get lat</button>
-
-    <p>GPS accuracy: {{ this.accuracy }}</p>
-
-    <button type="submit" @click="endWatch">Clear watch</button>
-    <BaseLocateMap v-if="!loading" :position="position"></BaseLocateMap>
-    <!-- <BasePointMap :position="position"></BasePointMap> -->
+    <div id="mapContainer"></div>
+    <p>Button submit to store, offer choice of observation types</p>
   </b-container>
-
-  <!-- 
-          NAME input (does not need to be unique)
-          three radio buttons:
-            locate with GPS
-            point or draw on map using leaflet draw
-  enter coordinates (map centers on these and puts marker)-->
 </template>
 
 <script>
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+
 export default {
-  name: 'Locate.vue',
+  // name: 'Locate.vue',
 
   data() {
     return {
+      leafletMap: null,
+      usermarker: null,
+      e: {
+        latlng: {},
+        accuracy: 0
+      },
       loading: true,
-      latitude: {
-        type: Number,
-        required: true
-      },
-      longitude: {
-        type: Number,
-        required: true
-      },
-      accuracy: {
-        type: Number
-      },
-      name: {
-        type: String,
-        required: true
-      },
-      options: {
-        enableHighAccuracy: true,
-        timeout: 29 * 1000,
-        maximumAge: 30 * 1000
-      }
-      // watchID: {
-      //   type: Number
-      // }
+      name: '',
+      locationMode: 'mapLocate'
     }
   },
-  computed: {
-    position: function() {
-      return [this.latitude, this.longitude]
-    }
-  },
-  methods: {
-    loglat: function() {
-      console.log(this.latitude)
-    },
-    endWatch: function() {
-      navigator.geolocation.clearWatch(this.watchID)
-    },
-    success: function(position) {
-      this.latitude = position.coords.latitude
-      this.longitude = position.coords.longitude
-      this.accuracy = position.coords.accuracy
-      this.endWatch(this.watchID)
-      this.loading = false
-    },
-    error: function(error) {
-      alert(`ERROR(${error.code}): ${error.message}`)
-    },
 
-    locate: function() {
-      if (navigator.geolocation) {
-        this.watchID = navigator.geolocation.watchPosition(
-          this.success,
-          this.error,
-          this.options
-        )
-      } else {
-        alert('Geolocation is not supported by this browser.')
-      }
-      console.log(this.watchID)
+  methods: {
+    check(checked) {
+      console.log(checked)
+    },
+    enterCoordinates() {
+      console.log('enter coordinates')
+    },
+    clickMap() {
+      console.log('click on map')
+    },
+    setupLeafletMap: function() {
+      this.leafletMap = L.map('mapContainer')
+      L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+        attribution:
+          "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>, under <a href='http://www.openstreetmap.org/copyright'>ODbL</a>.",
+        maxZoom: 18
+      }).addTo(this.leafletMap)
+    },
+    get_location() {
+      this.leafletMap
+        .locate({
+          setView: true,
+          maxZoom: 18,
+          watch: true,
+          enableHighAccuracy: true,
+          timeout: 10000
+        })
+        .on('locationfound', e => {
+          var radius = e.accuracy / 2
+
+          L.circle(e.latlng, radius).addTo(this.leafletMap)
+          if (!this.usermarker) {
+            this.usermarker = new L.marker(e.latlng)
+              .addTo(this.leafletMap)
+              .bindPopup(
+                'This device believes it is within ' +
+                  radius +
+                  ' meters of this point'
+              )
+              .openPopup()
+          } else {
+            this.usermarker.setLatLng(e.latlng)
+          }
+          this.e = e
+          this.loading = false
+        })
+        .on('locationerror', error => {
+          console.log(error)
+          if (this.usermarker) {
+            this.leafletMap.removeLayer(this.usermarker)
+            this.usermarker = undefined
+          }
+          this.leafletMap.stopLocate()
+          this.loading = false
+        })
     }
+
+    // addMarker: function() {
+    //   this.leafletMap.on('click', function(e) {
+    //     new L.marker(e.latlng).addTo(this.leafletMap)
+    //     console.log('new latlng: ', e.latlng)
+    //   })
+    // }
   },
 
   mounted() {
-    this.locate()
+    this.setupLeafletMap()
+    this.get_location()
+  },
+  beforeDestroy() {
+    if (this.leafletMap) {
+      this.leafletMap.remove()
+      this.leafletMap.stopLocate()
+    }
   }
 }
 </script>
+
+<style scoped>
+#mapContainer {
+  width: 80vw;
+  height: 80vh;
+}
+</style>

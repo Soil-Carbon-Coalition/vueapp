@@ -9,8 +9,9 @@ import L from 'leaflet'
 export default {
   props: {
     position: {
-      type: Array,
-      required: true
+      lat: Number,
+      lng: Number,
+      accuracy: Number
     }
   },
 
@@ -21,8 +22,12 @@ export default {
   },
   methods: {
     setupLeafletMap: function() {
-      this.leafletMap = L.map('mapContainer').setView(this.position, 12)
-      L.marker(this.position).addTo(this.leafletMap)
+      var latlng = new L.LatLng(this.position.lat, this.position.lng)
+      // var bounds = latlng.toBounds(this.position.accuracy)
+
+      this.leafletMap = L.map('mapContainer').setView(latlng, 12)
+      // .getBoundsZoom(bounds)
+      L.marker(latlng).addTo(this.leafletMap)
 
       // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       //   attribution:
@@ -36,7 +41,7 @@ export default {
     addMarker: function() {
       this.leafletMap.on('click', function(e) {
         new L.marker(e.latlng).addTo(this.leafletMap)
-        console.log(e.latlng)
+        console.log('new latlng: ', e.latlng)
       })
     }
   },

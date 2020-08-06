@@ -7,13 +7,14 @@ import SiteList from './views/SiteList.vue'
 import SiteDetail from './views/SiteDetail.vue'
 import SiteEdit from './views/SiteEdit.vue'
 import ObsMap from './views/ObsMap.vue'
+import ObsEdit from './views/ObsEdit.vue'
 import ObsDetail from './views/ObsDetail.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
-import ResourceList from './views/ResourceList.vue'
-import ResourceDetail from './views/ResourceDetail.vue'
-import ResourceEdit from './views/ResourceEdit.vue'
+import PostList from './views/PostList.vue'
+import PostDetail from './views/PostDetail.vue'
+import PostEdit from './views/PostEdit.vue'
 import Outbox from './views/Outbox.vue'
 import Inbox from './views/Inbox.vue'
 import UserProfile from './views/UserProfile.vue'
@@ -101,20 +102,20 @@ const router = new Router({
       props: true
     },
     {
-      path: '/resources/',
-      name: 'resource-list',
-      component: ResourceList
+      path: '/posts/',
+      name: 'post-list',
+      component: PostList
     },
     {
-      path: '/resources/:id/',
-      name: 'resource-detail',
-      component: ResourceDetail,
+      path: '/posts/:id/',
+      name: 'post-detail',
+      component: PostDetail,
       props: true
     },
     {
-      path: '/resources/new',
-      name: 'resource-edit',
-      component: ResourceEdit,
+      path: '/posts/new',
+      name: 'post-edit',
+      component: PostEdit,
       props: true
     },
     {
@@ -126,6 +127,12 @@ const router = new Router({
       path: '/observations/:id/',
       name: 'obs-detail',
       component: ObsDetail,
+      props: true
+    },
+    {
+      path: '/observation/:obstype',
+      name: 'obs-edit',
+      component: ObsEdit,
       props: true
     },
     {
