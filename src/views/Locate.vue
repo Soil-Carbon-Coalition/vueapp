@@ -1,36 +1,74 @@
 <template>
   <b-container>
-    <h1>Add a location or site</h1>
-    <b-form-input v-model="name" placeholder="Enter site name (required)" required />
-
+    <h3>Add a location or site</h3>
+    <b-form-input
+      class="mb-3"
+      v-model="sitename"
+      placeholder="Enter site name (required)"
+      size="lg"
+      required
+    />
     <div v-if="locationMode != 'drawPolygon'">
-      <label for="lat">Latitude:</label>
-      <b-form-input id="lat" type="number" step=".0000001" v-model="e.latlng.lat" />
-      <label for="lng">Longitude:</label>
-      <b-form-input id="lng" type="number" step=".0000001" v-model="e.latlng.lng" />
-      <label for="acc">Accuracy in meters:</label>
-      <b-form-input id="acc" type="number" v-model="e.accuracy" />
-    </div>
-
-    <b-form-group label="Choose a location mode:">
-      <b-form-radio-group
-        id="btn-radios-3"
-        v-model="locationMode"
-        buttons
-        stacked
-        button-variant="outline-primary"
-        size="lg"
-        name="radio-btn-stacked"
-        @change="check"
+      <b-form-group
+        label-cols="4"
+        label-cols-lg="2"
+        label-size="lg"
+        label="Latitude"
+        label-for="lat"
       >
-        <b-form-radio value="mapLocate">GPS</b-form-radio>
-        <b-form-radio value="clickMap" @checked="clickMap">Click on map</b-form-radio>
-        <b-form-radio value="enterCoords" @checked="enterCoordinates">Enter coordinates</b-form-radio>
-        <b-form-radio value="drawPolygon">Draw a polygon</b-form-radio>
-      </b-form-radio-group>
-    </b-form-group>
-
-    <div id="mapContainer"></div>
+        <b-form-input id="lat" size="lg" type="number" step=".0000001" v-model="latitude"></b-form-input>
+      </b-form-group>
+      <b-form-group
+        label-cols="4"
+        label-cols-lg="2"
+        label-size="lg"
+        label="Longitude"
+        label-for="lng"
+      >
+        <b-form-input id="lng" size="lg" type="number" step=".0000001" v-model="longitude"></b-form-input>
+      </b-form-group>
+      <b-form-group
+        v-if="locationMode == 'mapLocate'"
+        label-cols="4"
+        label-cols-lg="2"
+        label-size="lg"
+        label="Accuracy"
+        label-for="acc"
+      >
+        <b-form-input id="acc" size="lg" type="number" v-model="this.accuracy"></b-form-input>
+      </b-form-group>
+      <b-button
+        v-if="locationMode == 'enterCoordinates'"
+        type="submit"
+        class="float-right w-50 p-3"
+        @click="go_to_coordinates"
+        variant="primary"
+        d-inline
+        size="lg"
+      >Go</b-button>
+    </div>
+    <hr />
+    <div>
+      <b-form-group label="Choose a location mode:">
+        <b-form-radio-group
+          id="btn-radios-3"
+          v-model="locationMode"
+          buttons
+          stacked
+          button-variant="outline-primary"
+          size="lg"
+          name="radio-btn-stacked"
+          @change="call_location_mode"
+        >
+          <b-form-radio value="mapLocate">GPS</b-form-radio>
+          <b-form-radio value="enterCoordinates">Enter coordinates</b-form-radio>
+          <b-form-radio value="clickMap">Click on map</b-form-radio>
+          <b-form-radio value="drawPolygon">Draw a polygon</b-form-radio>
+        </b-form-radio-group>
+      </b-form-group>
+      <p class="hint">{{ hint }}</p>
+    </div>
+    <div id="mapContainer" class="map"></div>
     <p>Button submit to store, offer choice of observation types</p>
   </b-container>
 </template>
@@ -38,44 +76,94 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import 'leaflet-draw'
+import 'leaflet-draw/dist/leaflet.draw.css'
 
 export default {
-  // name: 'Locate.vue',
+  name: 'Locate.vue',
 
   data() {
     return {
-      leafletMap: null,
-      usermarker: null,
-      e: {
-        latlng: {},
-        accuracy: 0
-      },
-      loading: true,
-      name: '',
-      locationMode: 'mapLocate'
+      map: null,
+      marker: null,
+      circle: null,
+      latitude: 45,
+      longitude: -117,
+      accuracy: 10,
+      sitename: '',
+      locationMode: 'mapLocate',
+      hint: '',
+      polygon: null
     }
   },
-
   methods: {
-    check(checked) {
-      console.log(checked)
+    call_location_mode(checked) {
+      this[checked]()
+    },
+    makePoint() {
+      // make a geojson feature geometry
+      this.point = ``
     },
     enterCoordinates() {
-      console.log('enter coordinates')
+      this.hint = 'Enter coordinates in decimal degrees and press Go'
+      this.map.removeLayer(this.circle)
+    },
+    go_to_coordinates() {
+      this.marker.setLatLng([this.latitude, this.longitude])
+      this.map.setView([this.latitude, this.longitude], 12)
     },
     clickMap() {
-      console.log('click on map')
+      this.hint =
+        'Click on the map to select a new point. You must be online and can move and zoom the map to get a better view.'
+      this.map.removeLayer(this.circle)
+      this.map.on('click', e => {
+        this.marker.setLatLng(e.latlng)
+        this.latitude = e.latlng.lat
+        this.longitude = e.latlng.lng
+        this.map.setView(e.latlng, 12)
+      })
     },
-    setupLeafletMap: function() {
-      this.leafletMap = L.map('mapContainer')
+    drawPolygon() {
+      this.hint =
+        'You must be online to use this option. Select the polygon tool and click on map to define, edit, and save a single polygon.'
+      this.map.removeLayer(this.circle)
+      this.map.removeLayer(this.marker)
+      console.log('draw polygon function')
+      var drawnItems = new L.FeatureGroup()
+      this.map.addLayer(drawnItems)
+      var drawControl = new L.Control.Draw({
+        draw: {
+          polyline: false,
+          polygon: true,
+          rectangle: false,
+          circle: false,
+          marker: false,
+          circlemarker: false
+        },
+        edit: {
+          featureGroup: drawnItems
+        }
+      })
+      this.map.addControl(drawControl)
+      this.map.on(L.Draw.Event.CREATED, function(event) {
+        var layer = event.layer
+        drawnItems.addLayer(layer)
+        // store the first polygon's geojson geometry
+        this.polygon = drawnItems.toGeoJSON().features[0].geometry
+      })
+    },
+    initMap() {
+      this.map = L.map('mapContainer').fitWorld()
       L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
         attribution:
           "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>, under <a href='http://www.openstreetmap.org/copyright'>ODbL</a>.",
         maxZoom: 18
-      }).addTo(this.leafletMap)
+      }).addTo(this.map)
     },
-    get_location() {
-      this.leafletMap
+    mapLocate() {
+      this.hint =
+        "Your device's GPS or internet connection will locate itself. If you are offline you may not see a map."
+      this.map
         .locate({
           setView: true,
           maxZoom: 18,
@@ -85,50 +173,39 @@ export default {
         })
         .on('locationfound', e => {
           var radius = e.accuracy / 2
-
-          L.circle(e.latlng, radius).addTo(this.leafletMap)
-          if (!this.usermarker) {
-            this.usermarker = new L.marker(e.latlng)
-              .addTo(this.leafletMap)
-              .bindPopup(
-                'This device believes it is within ' +
-                  radius +
-                  ' meters of this point'
-              )
-              .openPopup()
+          this.circle = L.circle(e.latlng, radius).addTo(this.map)
+          if (!this.marker) {
+            this.marker = L.marker(e.latlng).addTo(this.map)
           } else {
-            this.usermarker.setLatLng(e.latlng)
+            this.marker.setLatLng(e.latlng)
           }
-          this.e = e
-          this.loading = false
+          this.latitude = e.latlng.lat
+          this.longitude = e.latlng.lng
+          this.accuracy = e.accuracy
+          this.map.stopLocate()
+          console.log('locate stopped')
         })
         .on('locationerror', error => {
           console.log(error)
-          if (this.usermarker) {
-            this.leafletMap.removeLayer(this.usermarker)
-            this.usermarker = undefined
+          if (this.marker) {
+            this.map.removeLayer(this.marker)
+            this.map.removeLayer(this.circle)
+            this.marker = undefined
           }
-          this.leafletMap.stopLocate()
-          this.loading = false
+          this.map.stopLocate()
+          // this.loading = false
         })
     }
-
-    // addMarker: function() {
-    //   this.leafletMap.on('click', function(e) {
-    //     new L.marker(e.latlng).addTo(this.leafletMap)
-    //     console.log('new latlng: ', e.latlng)
-    //   })
-    // }
   },
 
   mounted() {
-    this.setupLeafletMap()
-    this.get_location()
+    this.initMap()
+    this.mapLocate()
   },
   beforeDestroy() {
-    if (this.leafletMap) {
-      this.leafletMap.remove()
-      this.leafletMap.stopLocate()
+    if (this.map) {
+      this.map.remove()
+      this.map.stopLocate()
     }
   }
 }
@@ -138,5 +215,8 @@ export default {
 #mapContainer {
   width: 80vw;
   height: 80vh;
+}
+.hint {
+  font-size: 1.4em;
 }
 </style>

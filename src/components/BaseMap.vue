@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-popup" id="mapContainer"></div>
+  <div id="mapContainer"></div>
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    setupLeafletMap: function() {
+    setupLeafletMap() {
       this.leafletMap = L.map('mapContainer').setView([45.259, -117.743], 4)
 
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

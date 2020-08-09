@@ -5,7 +5,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SiteList from './views/SiteList.vue'
 import SiteDetail from './views/SiteDetail.vue'
-import SiteEdit from './views/SiteEdit.vue'
+// import SiteEdit from './views/SiteEdit.vue'
 import ObsMap from './views/ObsMap.vue'
 import ObsEdit from './views/ObsEdit.vue'
 import ObsDetail from './views/ObsDetail.vue'
@@ -76,12 +76,6 @@ const router = new Router({
       path: '/sites/:id/',
       name: 'site-detail',
       component: SiteDetail,
-      props: true
-    },
-    {
-      path: '/sites/new',
-      name: 'site-edit',
-      component: SiteEdit,
       props: true
     },
     {

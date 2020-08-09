@@ -6,7 +6,7 @@
       <router-link :to="{ name: 'site-list' }">Site List</router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'site-edit' }">Add site</router-link>
+      <router-link :to="{ name: 'locate' }">Add site</router-link>
     </p>
     <p>
       <router-link :to="{ name: 'obs-map' }">Observation Map and Search</router-link>
