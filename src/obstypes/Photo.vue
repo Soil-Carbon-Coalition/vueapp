@@ -49,10 +49,10 @@ export default {
     return {
       selectedFile: null,
       obs: {
-        observer: this.$store.state.user.id,
+        observer: this.$store.state.authUser.id,
         project: this.$store.state.project.id,
-        site: this.$store.state.observation.site.id,
-        type: 16,
+        site: this.$store.state.site.id,
+        obs_type: 16,
         kv: {
           caption: '',
           photo: '',
@@ -96,11 +96,14 @@ export default {
       // }
       const fd = new FormData()
       fd.append('file', this.selectedFile, this.selectedFile.name)
+      console.log(fd)
       Nprogress.start()
       axios
-        .post('http://httpbin.org/post', fd, {
+        .post('http://localhost:8000/api/upload/', fd, {
           header: {
-            'Content-Disposition': 'attachment; filename=this.selectedFile.name'
+            'Content-Disposition':
+              'form-data; name="file"; filename=this.selectedFile.name',
+            'Content-Type': 'multipart/form-data'
           }
         })
         .then(response => {

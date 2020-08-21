@@ -7,7 +7,6 @@ import SiteList from './views/SiteList.vue'
 import SiteDetail from './views/SiteDetail.vue'
 // import SiteEdit from './views/SiteEdit.vue'
 import ObsMap from './views/ObsMap.vue'
-import ObsEdit from './views/ObsEdit.vue'
 import ObsDetail from './views/ObsDetail.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
@@ -23,6 +22,7 @@ import NetworkIssue from './views/NetworkIssue.vue'
 import LayerMap from './views/LayerMap.vue'
 import Locate from './views/Locate.vue'
 import Photo from './obstypes/Photo.vue'
+import Infiltration from './obstypes/Infiltration.vue'
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
 import Test from './exp/Test.vue'
@@ -124,12 +124,6 @@ const router = new Router({
       props: true
     },
     {
-      path: '/observation/:obstype',
-      name: 'obs-edit',
-      component: ObsEdit,
-      props: true
-    },
-    {
       path: '/maps/:id/',
       name: 'layer-map',
       component: LayerMap,
@@ -164,10 +158,16 @@ const router = new Router({
       name: 'test',
       component: Test
     },
+    // OBS TYPES
     {
       path: '/photo',
       name: 'photo',
       component: Photo
+    },
+    {
+      path: '/infiltration',
+      name: 'infiltration',
+      component: Infiltration
     },
     {
       path: '/404',

@@ -39,6 +39,12 @@ export default {
     return apiClient.get('/projects/' + id)
     // return resources and maps too?
   },
+  getPosts() {
+    return apiClient.get('/posts/')
+  },
+  getPost(id) {
+    return apiClient.get('/posts/' + id)
+  },
   getResources() {
     return apiClient.get('/resources/')
   },
@@ -56,5 +62,8 @@ export default {
   },
   putUser(id) {
     return apiClient.put('/users/' + id)
+  },
+  postFile() {
+    return apiClient.post('/upload/')
   }
 }

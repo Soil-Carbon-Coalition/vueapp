@@ -51,7 +51,7 @@ export default new Vuex.Store({
     },
     isAuthenticated: true,
     // CURRENT PROJECT
-    project: { id: 7, name: 'MissouriBasin' },
+    project: { id: 7, name: 'Missouri Basin' },
 
     site: {
       id: 1071,
