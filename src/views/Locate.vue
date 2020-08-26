@@ -32,7 +32,7 @@
         label-cols="4"
         label-cols-lg="2"
         label-size="lg"
-        label="Accuracy"
+        label="Accuracy (m)"
         label-for="acc"
       >
         <b-form-input id="acc" size="lg" type="number" v-model="this.accuracy"></b-form-input>
@@ -45,7 +45,7 @@
         variant="primary"
         d-inline
         size="lg"
-      >Go</b-button>
+      >Center map</b-button>
     </div>
     <hr />
     <div>
@@ -65,11 +65,25 @@
           <b-form-radio value="clickMap">Click on map</b-form-radio>
           <b-form-radio value="drawPolygon">Draw a polygon</b-form-radio>
         </b-form-radio-group>
+        <b-button variant="info" class="m-3" size="lg" @click="modalShow = !modalShow">Location help</b-button>
       </b-form-group>
       <p class="hint">{{ hint }}</p>
     </div>
     <div id="mapContainer" class="map"></div>
     <p>Button submit to store, offer choice of observation types</p>
+
+    <b-modal v-model="modalShow" ok-only>
+      <template v-slot:modal-title>Location help</template>
+      <template v-slot:default>
+        <p>There are three ways to get a location:</p>
+        <ol>
+          <li>Use your device's GPS receiver, or the location of its network connection. This is the default and will be activated when this page loads.</li>
+          <li>Enter coordinates (in decimal degrees of latitude and longitude). Remember that the western hemisphere uses negative numbers for longitude.</li>
+          <li>Click the map at the correct location, or draw a polygon using the polygon tool. These both require that you are connected to a network so you can see base maps.</li>
+        </ol>
+        <p>Make the appropriate choice to define a new site.</p>
+      </template>
+    </b-modal>
   </b-container>
 </template>
 
@@ -93,7 +107,8 @@ export default {
       sitename: '',
       locationMode: 'mapLocate',
       hint: '',
-      polygon: null
+      polygon: null,
+      modalShow: false
     }
   },
   methods: {
@@ -105,7 +120,7 @@ export default {
       this.point = ``
     },
     enterCoordinates() {
-      this.hint = 'Enter coordinates in decimal degrees and press Go'
+      this.hint = 'Enter coordinates in decimal degrees and press Center map'
       this.map.removeLayer(this.circle)
     },
     go_to_coordinates() {
@@ -183,7 +198,7 @@ export default {
           this.longitude = e.latlng.lng
           this.accuracy = e.accuracy
           this.map.stopLocate()
-          console.log('locate stopped')
+          // console.log('locate stopped')
         })
         .on('locationerror', error => {
           console.log(error)

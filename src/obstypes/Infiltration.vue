@@ -2,7 +2,7 @@
   <b-container>
     <div>
       <b-button
-        class="w-50 mb-4"
+        class="w-50 m-4"
         size="lg"
         v-b-modal.how-to-infiltration
         variant="info"
@@ -14,12 +14,21 @@
           <i>multiple timings of an inch of water.</i> Drive sharpened rings straight into soil halfway, or at least 2 inches. With your fingertips, tamp or firm any cracks along the inside of the ring. Number your rings, at least mentally. Place plastic sheet on soil surface, pour measured 1 inch of water for your ring onto plastic, gently pull the sheet aside, and start the stopwatch for that ring. Stop it when half the soil surface is exposed. If you make an error, you can edit the timings, including adding ++ to a timing if the last inch has not yet infiltrated.
         </p>
       </b-modal>
+      <b-modal id="confirm" title="Confirm infiltration data is complete" ok-only>
+        <p class="my-4">Is your data complete?</p>
+      </b-modal>
     </div>
 
-    <b-form inline v-if="!this.numSelected">
+    <b-form inline v-if="!this.numSelected" @submit.prevent>
       <b-form-group label="How many infiltration rings are you using?">
         <b-form-input type="number" v-model.number="num_rings" placeholder="how many?" size="lg" />
-        <b-button class="m-3" @click="this.renderArray" variant="dark" size="lg">Set up stopwatches</b-button>
+        <b-button
+          type="submit"
+          class="m-3"
+          @click="this.renderArray"
+          variant="primary"
+          size="lg"
+        >Set up stopwatches</b-button>
       </b-form-group>
     </b-form>
     <div v-if="this.numSelected">
@@ -74,6 +83,8 @@ export default {
       }
     },
     collectData() {
+      this.$bvModal.show('confirm')
+
       var rings = []
       for (var i = 0; i < this.$refs.stopwatch.length; i++) {
         rings.push(this.$refs.stopwatch[i].ringData)
