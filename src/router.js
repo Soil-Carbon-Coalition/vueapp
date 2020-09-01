@@ -21,8 +21,10 @@ import NotFound from './views/NotFound.vue'
 import NetworkIssue from './views/NetworkIssue.vue'
 import LayerMap from './views/LayerMap.vue'
 import Locate from './views/Locate.vue'
+import ObsTypeList from './views/ObsTypeList.vue'
 import Photo from './obstypes/Photo.vue'
 import Infiltration from './obstypes/Infiltration.vue'
+import PastureMove from './obstypes/PastureMove.vue'
 // EXPERIMENTAL
 import Page from './exp/Page.vue'
 import Test from './exp/Test.vue'
@@ -66,6 +68,11 @@ const router = new Router({
       path: '/locate',
       name: 'locate',
       component: Locate
+    },
+    {
+      path: '/observation-types/',
+      name: 'obs-types',
+      component: ObsTypeList
     },
     {
       path: '/sites/',
@@ -168,6 +175,11 @@ const router = new Router({
       path: '/infiltration',
       name: 'infiltration',
       component: Infiltration
+    },
+    {
+      path: '/pasture-move',
+      name: 'pasture-move',
+      component: PastureMove
     },
     {
       path: '/404',

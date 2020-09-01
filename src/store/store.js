@@ -51,16 +51,9 @@ export default new Vuex.Store({
     },
     isAuthenticated: true,
     // CURRENT PROJECT
-    project: { id: 7, name: 'Missouri Basin' },
+    project: { id: 3, name: 'RMG-Montana' },
 
-    site: {
-      id: 1071,
-      sitename: 'Red Willow Pond',
-      geometry: {
-        type: 'Point',
-        coordinates: [-122.97848, 38.351168]
-      }
-    },
+    site: {},
     observation: {
       obsType: {
         id: null,

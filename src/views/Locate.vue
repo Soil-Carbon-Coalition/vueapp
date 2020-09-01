@@ -1,55 +1,9 @@
 <template>
   <b-container>
     <h3>Add a location or site</h3>
-    <b-form-input
-      class="mb-3"
-      v-model="sitename"
-      placeholder="Enter site name (required)"
-      size="lg"
-      required
-    />
-    <div v-if="locationMode != 'drawPolygon'">
-      <b-form-group
-        label-cols="4"
-        label-cols-lg="2"
-        label-size="lg"
-        label="Latitude"
-        label-for="lat"
-      >
-        <b-form-input id="lat" size="lg" type="number" step=".0000001" v-model="latitude"></b-form-input>
-      </b-form-group>
-      <b-form-group
-        label-cols="4"
-        label-cols-lg="2"
-        label-size="lg"
-        label="Longitude"
-        label-for="lng"
-      >
-        <b-form-input id="lng" size="lg" type="number" step=".0000001" v-model="longitude"></b-form-input>
-      </b-form-group>
-      <b-form-group
-        v-if="locationMode == 'mapLocate'"
-        label-cols="4"
-        label-cols-lg="2"
-        label-size="lg"
-        label="Accuracy (m)"
-        label-for="acc"
-      >
-        <b-form-input id="acc" size="lg" type="number" v-model="this.accuracy"></b-form-input>
-      </b-form-group>
-      <b-button
-        v-if="locationMode == 'enterCoordinates'"
-        type="submit"
-        class="float-right w-50 p-3"
-        @click="go_to_coordinates"
-        variant="primary"
-        d-inline
-        size="lg"
-      >Center map</b-button>
-    </div>
-    <hr />
     <div>
-      <b-form-group label="Choose a location mode:">
+      <b-form-group>
+        <p class="hint">Choose a location mode</p>
         <b-form-radio-group
           id="btn-radios-3"
           v-model="locationMode"
@@ -69,17 +23,74 @@
       </b-form-group>
       <p class="hint">{{ hint }}</p>
     </div>
+
     <div id="mapContainer" class="map"></div>
-    <p>Button submit to store, offer choice of observation types</p>
+    <b-form @submit.prevent="onSubmit">
+      <b-form-group
+        label-cols="4"
+        label-cols-lg="2"
+        label-size="lg"
+        label="Site name"
+        label-for="sitename"
+      >
+        <b-form-input
+          id="sitename"
+          class="mt-3"
+          v-model="name"
+          placeholder="site name or ID (required)"
+          size="lg"
+          required
+        />
+      </b-form-group>
+      <div v-if="locationMode != 'drawPolygon'">
+        <b-form-group
+          label-cols="4"
+          label-cols-lg="2"
+          label-size="lg"
+          label="Latitude"
+          label-for="lat"
+        >
+          <b-form-input id="lat" size="lg" type="number" step=".0000001" v-model.number="latitude"></b-form-input>
+        </b-form-group>
+        <b-form-group
+          label-cols="4"
+          label-cols-lg="2"
+          label-size="lg"
+          label="Longitude"
+          label-for="lng"
+        >
+          <b-form-input id="lng" size="lg" type="number" step=".0000001" v-model.number="longitude"></b-form-input>
+        </b-form-group>
+        <b-form-group
+          v-if="locationMode == 'mapLocate'"
+          label-cols="4"
+          label-cols-lg="2"
+          label-size="lg"
+          label="Accuracy (m)"
+          label-for="acc"
+        >
+          <b-form-input id="acc" size="lg" type="number" v-model.number="accuracy"></b-form-input>
+        </b-form-group>
+        <b-button
+          v-if="locationMode == 'enterCoordinates'"
+          class="float-right w-50 p-3"
+          @click="go_to_coordinates"
+          variant="primary"
+          d-inline
+          size="lg"
+        >Center map</b-button>
+      </div>
+      <b-button type="submit" name="submit" variant="dark" size="lg" class="m-5 w-75">Submit site</b-button>
+    </b-form>
 
     <b-modal v-model="modalShow" ok-only>
       <template v-slot:modal-title>Location help</template>
       <template v-slot:default>
         <p>There are three ways to get a location:</p>
         <ol>
-          <li>Use your device's GPS receiver, or the location of its network connection. This is the default and will be activated when this page loads.</li>
-          <li>Enter coordinates (in decimal degrees of latitude and longitude). Remember that the western hemisphere uses negative numbers for longitude.</li>
-          <li>Click the map at the correct location, or draw a polygon using the polygon tool. These both require that you are connected to a network so you can see base maps.</li>
+          <li>Use your device's GPS receiver, or the location of its network connection. This is the default and will be activated when this page loads. If you are moving around, be sure to reload the page when you need to get the location.</li>
+          <li>Enter coordinates (in decimal degrees of latitude and longitude). Remember to use negative numbers for longitude in the western hemisphere, and for latitude in the southern hemisphere.</li>
+          <li>Click the map at the correct location, or draw a polygon using the polygon tool. These both require that you are connected to a network so you can see base maps. Clicking on the map will also recenter it.</li>
         </ol>
         <p>Make the appropriate choice to define a new site.</p>
       </template>
@@ -92,32 +103,35 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw.css'
-
+import SHService from '@/services/SHService.js'
+import Nprogress from 'nprogress'
 export default {
   name: 'Locate.vue',
 
   data() {
     return {
+      componentKey: 1,
       map: null,
       marker: null,
       circle: null,
       latitude: 45,
       longitude: -117,
-      accuracy: 10,
-      sitename: '',
+      name: '',
+      accuracy: null,
+      polygon: null,
       locationMode: 'mapLocate',
       hint: '',
-      polygon: null,
-      modalShow: false
+      modalShow: false,
+      csrf: 'qVENVTTvHx7ummUPh9qkgNqeNrCdT5CfypZpKPjwjCii3yNkgmZH1Hi5cf22illz'
     }
   },
+
   methods: {
     call_location_mode(checked) {
+      if (this.polygon) {
+        this.polygon = null
+      }
       this[checked]()
-    },
-    makePoint() {
-      // make a geojson feature geometry
-      this.point = ``
     },
     enterCoordinates() {
       this.hint = 'Enter coordinates in decimal degrees and press Center map'
@@ -133,9 +147,9 @@ export default {
       this.map.removeLayer(this.circle)
       this.map.on('click', e => {
         this.marker.setLatLng(e.latlng)
-        this.latitude = e.latlng.lat
-        this.longitude = e.latlng.lng
-        this.map.setView(e.latlng, 12)
+        this.latitude = parseFloat(e.latlng.lat.toFixed(7))
+        this.longitude = parseFloat(e.latlng.lng.toFixed(7))
+        this.map.setView(e.latlng)
       })
     },
     drawPolygon() {
@@ -143,7 +157,6 @@ export default {
         'You must be online to use this option. Select the polygon tool and click on map to define, edit, and save a single polygon.'
       this.map.removeLayer(this.circle)
       this.map.removeLayer(this.marker)
-      console.log('draw polygon function')
       var drawnItems = new L.FeatureGroup()
       this.map.addLayer(drawnItems)
       var drawControl = new L.Control.Draw({
@@ -160,11 +173,13 @@ export default {
         }
       })
       this.map.addControl(drawControl)
-      this.map.on(L.Draw.Event.CREATED, function(event) {
+      this.map.on(L.Draw.Event.CREATED, event => {
         var layer = event.layer
         drawnItems.addLayer(layer)
         // store the first polygon's geojson geometry
-        this.polygon = drawnItems.toGeoJSON().features[0].geometry
+        this.polygon = JSON.stringify(
+          drawnItems.toGeoJSON().features[0].geometry
+        )
       })
     },
     initMap() {
@@ -210,6 +225,29 @@ export default {
           this.map.stopLocate()
           // this.loading = false
         })
+    },
+    onSubmit() {
+      Nprogress.start()
+      var site = {}
+      site.name = this.name
+      site.geometry = this.polygon
+        ? this.polygon
+        : {
+            type: 'Point',
+            coordinates: [this.longitude, this.latitude]
+          }
+
+      SHService.postSite(site)
+        .then(response => {
+          console.log('response: ', response.data)
+          this.$store.dispatch('setSite', response.data)
+          Nprogress.done()
+          this.$router.push('observation-types')
+        })
+        .catch(function(error) {
+          // Nprogress.done()
+          console.log(error)
+        })
     }
   },
 
@@ -229,7 +267,7 @@ export default {
 <style scoped>
 #mapContainer {
   width: 80vw;
-  height: 80vh;
+  height: 50vh;
 }
 .hint {
   font-size: 1.4em;

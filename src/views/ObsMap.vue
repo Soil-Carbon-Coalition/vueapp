@@ -48,7 +48,6 @@
 import SHService from '@/services/SHService.js'
 import store from '@/store/store.js'
 import Nprogress from 'nprogress'
-// import axios from 'axios'
 
 export default {
   name: 'ObsMap.vue',

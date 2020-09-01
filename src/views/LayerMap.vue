@@ -1,21 +1,27 @@
 <template>
-  <b-container>
-    <h3>{{ map.name }}</h3>
-    <p>{{ map.description }}</p>
-    <div id="mapContainer"></div>
+  <b-container fluid>
+    <b-row>
+      <b-col cols="8">
+        <div id="mapContainer"></div>
+      </b-col>
+      <b-col cols="4">
+        <h3>{{ map.name }}</h3>
+        <p>{{ map.description }}</p>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import 'leaflet.markercluster/dist/MarkerCluster.css'
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
-import 'leaflet.markercluster/dist/leaflet.markercluster.js'
+// import 'leaflet.markercluster/dist/MarkerCluster.css'
+// import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+// import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 // import omnivore from '@mapbox/leaflet-omnivore'
 
 import SHService from '@/services/SHService.js'
-import Nprogress from 'nprogress'
+// import Nprogress from 'nprogress'
 
 export default {
   name: 'LayerMap',
@@ -23,18 +29,26 @@ export default {
   data() {
     return {
       // NOTE 'map' is data object from api, 'leafletMap' is the map Leaflet creates
-      map: {
-        type: Object,
-        required: true
-      },
+      map: Object,
       leafletMap: null,
       baseMaps: {},
       overlayMaps: {},
       loading: true,
       popupOptions: {
         maxWidth: 500,
-        maxHeight: 400
-      }
+        maxHeight: 400,
+        midWidth: 350
+      },
+      iconSuffixes: [
+        '',
+        '-red',
+        '-green',
+        '-violet',
+        '-orange',
+        '-grey',
+        '-yellow',
+        '-black'
+      ]
     }
   },
   methods: {
@@ -61,21 +75,38 @@ export default {
       popup += '</table>'
       return popup
     },
-    onEachFeature: function(feature, layer) {
-      if (feature.properties.name) {
-        layer
-          .bindTooltip(feature.properties.name)
-          .bindPopup(this.makeTable(feature.properties), this.popupOptions)
+    makeList: function(obj) {
+      var popup = '<table>'
+      if (obj.length) {
+        for (var i = 0; i < obj.length; i++) {
+          popup +=
+            '<tr><td><a href="/observations/' +
+            obj[i].id +
+            '/">' +
+            obj[i].label +
+            '</a></td></tr>'
+        }
+        popup += '</table>'
       } else {
-        layer
-          .bindTooltip(feature.properties.sitename)
-          .bindPopup(this.makeTable(feature.properties), this.popupOptions)
+        popup = '<p>No observations for this site</p>'
       }
+      return popup
+    },
+    onEachFeature: function(feature, layer) {
+      layer
+        .bindTooltip(
+          feature.properties.name
+            ? feature.properties.name
+            : feature.properties.sitename
+        )
+        .bindPopup(
+          this.makeList(feature.properties.site_observations),
+          this.popupOptions
+        )
     },
     addVectors: function() {
       var overlayNames = []
       var overlayData = []
-
       for (var i = 0; i < this.map.vectors.length; i++) {
         overlayNames.push(this.map.vectors[i].name)
         overlayData.push('mapdata' + i)
@@ -91,20 +122,50 @@ export default {
       }
       overlayNames.forEach((key, j) => (this.overlayMaps[key] = overlayData[j]))
     },
+    // addVectors: function() {
+    //   var overlayNames = []
+    //   var overlayData = []
+
+    //   for (var i = 0; i < this.map.vectors.length; i++) {
+    //     overlayNames.push(this.map.vectors[i].name)
+    //     overlayData.push('mapdata' + i)
+
+    //     // create a layerGroup for each vector
+    //     this.map.vectors[i].name = L.layerGroup()
+    //     // create a different uppercase variable for the data
+    //     omnivore.geojson(this.map.vectors[i].dataurl).on('ready', function() {
+    //       // After the 'ready' event fires, the GeoJSON contents are accessible
+    //       // and you can iterate through layers to bind custom popups.
+    //       L.eachLayer(function(marker) {
+    //         // set icons according to index of forloop
+    //         marker.setIcon(
+    //           L.icon({
+    //             iconUrl:
+    //               '/leafletMarkers/marker-icon' + this.iconSuffixes[i] + '.png',
+    //             shadowUrl: '/leafletMarkers/marker-shadow.png'
+    //           })
+    //         )
+    //         marker.bindTooltip(marker.feature.properties.name)
+    //         marker.bindPopup(marker.feature.properties.type, this.popupOptions)
+    //       }).addLayer(this)
+    //     })
+    //   }
+    //   overlayNames.forEach((key, j) => (this.overlayMaps[key] = overlayData[j]))
+    // },
     addLayerControl: function() {
-      console.log(this.overlayMaps)
+      console.log(this.overlayMaps, this.baseMaps)
       L.control.layers(this.baseMaps).addTo(this.leafletMap)
-      Nprogress.done()
-      this.leafletMap.on('popupopen', function(e) {
-        var px = this.leafletMap.project(e.popup._latlng)
-        px.y -= e.popup._container.clientHeight / 2.5
-        this.leafletMap.panTo(this.leafletMap.unproject(px), {
-          animate: true
-        })
-      })
+
+      // this.leafletMap.on('popupopen', function(e) {
+      //   var px = this.leafletMap.project(e.popup._latlng)
+      //   px.y -= e.popup._container.clientHeight / 2.5
+      //   this.leafletMap.panTo(this.leafletMap.unproject(px), {
+      //     animate: true
+      //   })
+      // })
     },
     initMap: function() {
-      Nprogress.start()
+      // Nprogress.start()
       SHService.getMap(this.id)
         .then(response => {
           this.map = response.data
@@ -133,16 +194,15 @@ export default {
           console.log(this.baseMaps)
           this.addVectors()
           // this.addLayerControl()
-          Nprogress.done()
+          // Nprogress.done()
         })
         .catch(error => {
           console.log('RASTER ERROR', error.response)
-          Nprogress.done()
+          // Nprogress.done()
         })
         .finally(() => (this.loading = false))
     }
   },
-
   mounted() {
     this.initMap()
     setTimeout(this.addLayerControl, 4000)
@@ -164,7 +224,7 @@ export default {
 
 <style>
 #mapContainer {
-  width: 70vw;
+  width: 100%;
   height: 100vh;
 }
 

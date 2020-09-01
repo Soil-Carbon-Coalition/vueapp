@@ -11,7 +11,7 @@
       <b-modal id="how-to-infiltration" title="Water infiltration" ok-only>
         <p class="my-4">
           <b>How long does it take an inch of water to soak into soil?</b> Because of the variability of this measurement, we recommend concurrent timings of at least 3 rings in a small area, and 4 or 5 are even better, with
-          <i>multiple timings of an inch of water.</i> Drive sharpened rings straight into soil halfway, or at least 2 inches. With your fingertips, tamp or firm any cracks along the inside of the ring. Number your rings, at least mentally. Place plastic sheet on soil surface, pour measured 1 inch of water for your ring onto plastic, gently pull the sheet aside, and start the stopwatch for that ring. Stop it when half the soil surface is exposed. If you make an error, you can edit the timings, including adding ++ to a timing if the last inch has not yet infiltrated.
+          <i>multiple timings of an inch of water.</i> First, drive your sharpened rings straight into soil halfway, or at least 2 inches. With your fingertips, tamp or firm any cracks along the inside of the ring. Number your rings, at least mentally (I like to have mine in an approximate line). Set up app with stopwatches. Place plastic sheet on soil surface, pour measured 1 inch of water for your ring onto plastic, gently pull the sheet aside, and start the stopwatch for that ring. Stop it when half the soil surface is exposed. If you make an error, you can edit the timings, including adding ++ to a timing if the last inch has not yet infiltrated.
         </p>
       </b-modal>
       <b-modal id="confirm" title="Confirm infiltration data is complete" ok-only>

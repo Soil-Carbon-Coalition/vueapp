@@ -2,18 +2,17 @@
 
 import axios from 'axios'
 // import NProgress from 'nprogress'
+// try this for csrf:
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN'
 
 const apiClient = axios.create({
   baseURL: 'http://127.0.0.1:8000/api',
-
-  // try this for csrf:
-  // axios.defaults.xsrfCookieName = 'csrftoken'
-  // axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
-
-  withCredentials: false,
+  // withCredentials: false,
   headers: {
-    Accept: 'application/json',
-    'Content-type': 'application/json'
+    'X-CSRFTOKEN': 'csrftoken'
+    // Accept: 'application/json',
+    // 'Content-type': 'application/json'
   },
   timeout: 35000
 })
@@ -45,20 +44,17 @@ export default {
   getPost(id) {
     return apiClient.get('/posts/' + id)
   },
-  getResources() {
-    return apiClient.get('/resources/')
-  },
-  getResource(id) {
-    return apiClient.get('/resources/' + id)
-  },
   getMap(id) {
     return apiClient.get('/maps/' + id)
   },
   getVectorData(url) {
     return apiClient.get(url)
   },
-  postObs(obs) {
-    return apiClient.post('/observations/', obs)
+  postObs(formData) {
+    return apiClient.post('/observations/', formData)
+  },
+  postSite(formData) {
+    return apiClient.post('/sites/', formData)
   },
   putUser(id) {
     return apiClient.put('/users/' + id)

@@ -12,9 +12,6 @@
       <router-link :to="{ name: 'obs-map' }">Observation Map and Search</router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'obs-edit' }">Add Observation</router-link>
-    </p>
-    <p>
       <router-link :to="{ name: 'page' }">Page</router-link>
     </p>
     <p>
