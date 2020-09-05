@@ -10,7 +10,6 @@ import ObsMap from './views/ObsMap.vue'
 import ObsDetail from './views/ObsDetail.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
-import ProjectEdit from './views/ProjectEdit.vue'
 import PostList from './views/PostList.vue'
 import PostDetail from './views/PostDetail.vue'
 import PostEdit from './views/PostEdit.vue'
@@ -97,12 +96,6 @@ const router = new Router({
       props: true
     },
     {
-      path: '/projects/new',
-      name: 'project-edit',
-      component: ProjectEdit,
-      props: true
-    },
-    {
       path: '/posts/',
       name: 'post-list',
       component: PostList
@@ -114,7 +107,7 @@ const router = new Router({
       props: true
     },
     {
-      path: '/posts/new',
+      path: '/posts/:id/edit/',
       name: 'post-edit',
       component: PostEdit,
       props: true

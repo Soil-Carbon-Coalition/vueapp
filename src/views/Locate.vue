@@ -149,6 +149,8 @@ export default {
         this.marker.setLatLng(e.latlng)
         this.latitude = parseFloat(e.latlng.lat.toFixed(7))
         this.longitude = parseFloat(e.latlng.lng.toFixed(7))
+        // when you cross the dateline
+        this.longitude = (((this.longitude % 360) + 540) % 360) - 180
         this.map.setView(e.latlng)
       })
     },

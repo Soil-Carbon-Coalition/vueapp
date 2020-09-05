@@ -70,19 +70,22 @@ export default {
       return params
     },
     filteredFeatures() {
-      return this.features
-        .map(feature => ({
-          ...feature,
-          properties: {
-            name: feature.properties.name,
-            site_observations: feature.properties.site_observations.filter(
-              obs => {
-                return JSON.stringify(obs).match(new RegExp(this.search, 'i'))
-              }
-            )
-          }
-        }))
-        .filter(feature => feature.properties.site_observations.length)
+      return (
+        this.features
+          // use map first so as not to overwrite this.features
+          .map(feature => ({
+            ...feature,
+            properties: {
+              name: feature.properties.name,
+              site_observations: feature.properties.site_observations.filter(
+                obs => {
+                  return JSON.stringify(obs).match(new RegExp(this.search, 'i'))
+                }
+              )
+            }
+          }))
+          .filter(feature => feature.properties.site_observations.length)
+      )
     }
   },
 

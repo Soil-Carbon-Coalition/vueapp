@@ -3,9 +3,6 @@
     <h3>{{ post.title }}</h3>
 
     <p>
-      <a :href="this.post.link">{{ post.link }}</a>
-    </p>
-    <p>
       posted by
       <b>{{ post.author }}</b>
       on {{ post.date }}
@@ -24,6 +21,7 @@ export default {
       loading: true
     }
   },
+
   mounted() {
     SHService.getPost(this.id)
       .then(response => (this.post = response.data))

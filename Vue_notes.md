@@ -59,9 +59,12 @@ MUTATIONS are synchronous, ACTIONS asynchronous
 
 mapState MAPs the getters in the store to the computed properties on the component, and MAPs the actions in the store to the methods in our component.
 
-## HELPFUL LINKS
+## LOCALFORAGE
+
+The Vuex store does not persist between page refresh or app reload. To do offline-capable we need localForage?
 
 Localforage: https://medium.com/daily-now/optimistic-offline-first-apps-with-vuex-d8a412e105a7
+there is also a Vue localForage plugin: https://www.npmjs.com/package/vue-localforage
 
 and this article sez service workers aren't needed:
 https://netterminalmachine.com/blog/2018/persisting-a-vuex-store-to-indexed-db
@@ -103,6 +106,10 @@ Administrator actions (project coordinators have admin privileges for their proj
 Since this data-entry app will basically be a single-page application that can be used offline, as well as on desktop, it needs only limited components. I will use Vue router.
 
 Components referenced by Vue router (these are PAGES) best placed in views directory, whereas re-usable or base components go into components directory.
+
+USING SAME FORM FOR EDIT AND CREATE: https://medium.com/@mntlmaxi/dry-vue-how-to-reuse-and-prepopulate-forms-83068e142c70
+
+maybe BETTER: https://stackoverflow.com/questions/58548017/vuejs-how-to-use-a-single-form-to-add-and-edit
 
 ## COMPONENT REGISTRATION
 

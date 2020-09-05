@@ -24,6 +24,8 @@ import {
 } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueLocalForage from 'vue-localforage'
+Vue.use(VueLocalForage)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ImagePlugin)

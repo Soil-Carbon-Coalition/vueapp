@@ -1,13 +1,9 @@
 <template>
   <b-container v-if="!loading">
-    <h3>
-      Showing Project # {{ project.id }}:
-      <br />
-      {{ project.name }}
-    </h3>
-
-    <p>{{ project.geography }}</p>
-    <p>{{ project.description }}</p>
+    <h3>{{ project.name }}</h3>
+    <p>Geography: {{ project.geography }}</p>
+    <p>Description: {{ project.description }}</p>
+    <p>Guidelines for submitting observations and data: {{ project.guidelines }}</p>
     <!-- LIST PROJECT RESOURCES AND MAPS? -->
   </b-container>
 </template>

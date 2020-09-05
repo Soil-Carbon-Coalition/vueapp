@@ -53,6 +53,9 @@ export default {
   postObs(formData) {
     return apiClient.post('/observations/', formData)
   },
+  postPost(formData) {
+    return apiClient.post('/posts/', formData)
+  },
   postSite(formData) {
     return apiClient.post('/sites/', formData)
   },
